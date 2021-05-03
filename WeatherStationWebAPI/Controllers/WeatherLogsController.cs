@@ -79,7 +79,7 @@ namespace WeatherStationWebAPI.Controllers
                 return NotFound();
             }
 
-            return null;
+            return AllMeasurementsForTimeframe;
         }
 
         // PUT: api/WeatherLogs/5
