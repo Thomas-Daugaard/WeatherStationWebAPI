@@ -42,6 +42,15 @@ namespace WeatherStationWebAPI.Controllers
             return weatherLog;
         }
 
+        // GET: api/WeahterLogs/LastThree
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<WeatherLog>>> GetLastThreeWeatherLogs()
+        {
+            var lastThreeEntries = await _context.WeatherLogs.OrderByDescending(i => i.LogId).Take(3).ToListAsync();
+
+            return lastThreeEntries;
+        }
+
         // PUT: api/WeatherLogs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
