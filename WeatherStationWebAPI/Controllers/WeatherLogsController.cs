@@ -60,8 +60,9 @@ namespace WeatherStationWebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherLog>>> GetWeatherLogsFotTimeframe(DateTime startTime, DateTime endTime)
+        public async Task<ActionResult<IEnumerable<WeatherLog>>> GetWeatherLogsForTimeframe(DateTime startTime, DateTime endTime)
         {
+            var AllMeasurementsForTimeframe = await _context.WeatherLogs.Where(s => s.LogTime >= startTime).Where(e => e.LogTime <= endTime).ToListAsync();
             return null;
         }
 
