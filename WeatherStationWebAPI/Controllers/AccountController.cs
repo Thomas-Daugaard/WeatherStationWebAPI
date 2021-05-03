@@ -10,6 +10,8 @@ using static BCrypt.Net.BCrypt;
 
 namespace WeatherStationWebAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;

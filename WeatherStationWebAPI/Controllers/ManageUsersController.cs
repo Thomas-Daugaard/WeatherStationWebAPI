@@ -22,7 +22,7 @@ namespace WeatherStationWebAPI.Controllers
         // GET: ManageUsers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.User.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
         // GET: ManageUsers/Details/5
@@ -33,7 +33,7 @@ namespace WeatherStationWebAPI.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
@@ -73,7 +73,7 @@ namespace WeatherStationWebAPI.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace WeatherStationWebAPI.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
@@ -139,15 +139,15 @@ namespace WeatherStationWebAPI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var user = await _context.User.FindAsync(id);
-            _context.User.Remove(user);
+            var user = await _context.Users.FindAsync(id);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(long id)
         {
-            return _context.User.Any(e => e.UserId == id);
+            return _context.Users.Any(e => e.UserId == id);
         }
     }
 }
