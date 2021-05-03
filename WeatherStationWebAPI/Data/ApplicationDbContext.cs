@@ -16,7 +16,6 @@ namespace WeatherStationWebAPI.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<WeatherLog> WeatherLogs { get; set; }
-
         public DbSet<Place> Places { get; set; }
     }
 }
