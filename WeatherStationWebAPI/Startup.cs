@@ -33,7 +33,7 @@ namespace WeatherStationWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ThomasConnectionString")));
+                    options.UseSqlServer(Configuration.GetConnectionString("EmilConnectionString")));
             
             services.AddControllers();
 
@@ -101,43 +101,57 @@ namespace WeatherStationWebAPI
 
         public void SeedUsers(ApplicationDbContext context)
         {
-            Place place1 = new Place() {Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya"};
-            Place place2 = new Place() { Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
-            Place place3 = new Place() { Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers" };
-
-            WeatherLog firstlog = new WeatherLog()
+            if (context.Users.First() == null)
             {
-                LogTime =  Convert.ToDateTime("10-10-2021"),
-                LogPlace = place1,
-                Temperature = 24,
-                Humidity = 80,
-                AirPressure = 50
-            };
 
-            context.WeatherLogs.AddAsync(firstlog);
-
-            WeatherLog secondlog = new WeatherLog()
-            {
-                LogTime = Convert.ToDateTime("10-10-2021"),
-                LogPlace = place2,
-                Temperature = 24,
-                Humidity = 80,
-                AirPressure = 50
-            };
-
-            WeatherLog thirdlog = new WeatherLog()
-            {
-                LogTime = Convert.ToDateTime("10-10-2021"),
-                LogPlace = place3,
-                Temperature = 24,
-                Humidity = 80,
-                AirPressure = 50
-            };
+            }
+           
         }
 
         public void SeedWeatherLog(ApplicationDbContext context)
         {
+            if (context.WeatherLogs.First() == null)
+            {
+                Place place1 = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" };
+                Place place2 = new Place() { Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
+                Place place3 = new Place() { Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers" };
 
+                WeatherLog firstlog = new WeatherLog()
+                {
+                    LogTime = Convert.ToDateTime("10-10-2021"),
+                    LogPlace = place1,
+                    Temperature = 24,
+                    Humidity = 80,
+                    AirPressure = 50
+                };
+
+                context.WeatherLogs.Add(firstlog);
+                context.SaveChanges();
+
+                WeatherLog secondlog = new WeatherLog()
+                {
+                    LogTime = Convert.ToDateTime("10-10-2021"),
+                    LogPlace = place2,
+                    Temperature = 24,
+                    Humidity = 80,
+                    AirPressure = 50
+                };
+
+                context.WeatherLogs.Add(secondlog);
+                context.SaveChanges();
+
+                WeatherLog thirdlog = new WeatherLog()
+                {
+                    LogTime = Convert.ToDateTime("10-10-2021"),
+                    LogPlace = place3,
+                    Temperature = 24,
+                    Humidity = 80,
+                    AirPressure = 50
+                };
+
+                context.WeatherLogs.Add(thirdlog);
+                context.SaveChanges();
+            }
         }
     }
 }
