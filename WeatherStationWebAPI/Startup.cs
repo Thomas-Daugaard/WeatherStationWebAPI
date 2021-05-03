@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
 using WeatherStationWebAPI.Data;
+using WeatherStationWebAPI.WebSocket;
 
 namespace WeatherStationWebAPI
 {
@@ -54,11 +55,13 @@ namespace WeatherStationWebAPI
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}");
+                endpoints.MapHub<WeatherHub>("/weatherHub"); //For SignalR
             });
         }
     }
