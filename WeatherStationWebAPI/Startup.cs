@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WeatherStationWebAPI.Data;
+using WeatherStationWebAPI.WebSocket;
 
 namespace WeatherStationWebAPI
 {
@@ -57,6 +58,8 @@ namespace WeatherStationWebAPI
                         ValidateAudience = false
                     };
                 });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,6 +89,7 @@ namespace WeatherStationWebAPI
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}");
+                endpoints.MapHub<WeatherHub>("/weatherHub"); //For SignalR
             });
         }
     }
