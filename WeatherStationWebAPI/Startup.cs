@@ -54,8 +54,10 @@ namespace WeatherStationWebAPI
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.macon
-            })
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Account}/{action=Login}");
+            });
         }
     }
 }
