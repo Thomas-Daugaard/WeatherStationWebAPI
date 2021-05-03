@@ -60,9 +60,10 @@ namespace WeatherStationWebAPI.Controllers
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Ok();
             }
-            return View(user);
+
+            return NotFound();
         }
 
         // GET: ManageUsers/Edit/5
@@ -78,7 +79,8 @@ namespace WeatherStationWebAPI.Controllers
             {
                 return NotFound();
             }
-            return View(user);
+
+            return Ok();
         }
 
         // POST: ManageUsers/Edit/5
@@ -113,7 +115,8 @@ namespace WeatherStationWebAPI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+
+            return Ok(user);
         }
 
         // GET: ManageUsers/Delete/5
@@ -131,7 +134,7 @@ namespace WeatherStationWebAPI.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            return Ok(user);
         }
 
         // POST: ManageUsers/Delete/5
