@@ -103,7 +103,34 @@ namespace WeatherStationWebAPI
         {
             if (context.Users.First() == null)
             {
+                List<User> users = new List<User>()
+                {
+                    new User()
+                    {
+                        FirstName = "Hans",
+                        LastName = "Hansen",
+                        Email = "test1@testesen.dk"
+                    },
+                    new User()
+                    {
+                        FirstName = "Peter",
+                        LastName = "Petersen",
+                        Email = "test2@testesen.dk"
+                    },
+                    new User()
+                    {
+                        FirstName = "Kurt",
+                        LastName = "Kurtesen",
+                        Email = "test3@testesen.dk"
+                    }
+                };
 
+                foreach (var item in users)
+                {
+                    context.Users.Add(item);
+                }
+
+                context.SaveChanges();
             }
            
         }
