@@ -11,7 +11,6 @@ namespace WeatherStationWebAPI.WebSocket
         public async Task SendMessage(string user, string message)
         {
             await Clients.All.SendAsync("UpdateMessage", user, message);
-
         }
     }
 }
