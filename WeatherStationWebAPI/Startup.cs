@@ -101,7 +101,12 @@ namespace WeatherStationWebAPI
 
         public void SeedUsers(ApplicationDbContext context)
         {
-            if (context.Users.First() == null)
+            var exists = context.Users.SingleOrDefault(d=>d.UserId == 1);
+            if (exists != null)
+            {
+
+            }
+            else
             {
                 List<User> users = new List<User>()
                 {
@@ -137,7 +142,13 @@ namespace WeatherStationWebAPI
 
         public void SeedWeatherLog(ApplicationDbContext context)
         {
-            if (context.WeatherLogs.First() == null)
+            var exists = context.WeatherLogs.SingleOrDefault(d => d.LogId == 1);
+
+            if (exists != null)
+            {
+
+            }
+            else
             {
                 Place place1 = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" };
                 Place place2 = new Place() { Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
@@ -179,6 +190,7 @@ namespace WeatherStationWebAPI
                 context.WeatherLogs.Add(thirdlog);
                 context.SaveChanges();
             }
+            
         }
     }
 }
