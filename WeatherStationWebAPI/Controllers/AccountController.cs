@@ -38,6 +38,24 @@ namespace WeatherStationWebAPI.Controllers
             return CreatedAtAction("Get", new { id = user.UserId }, regUser);
         }
 
+        [HttpPost("login"), AllowAnonymous]
+        public async Task<ActionResult<UserDto>> Login(UserDto login)
+        {
+            login.Email = login.Email.ToLower();
+            var user = await _context.Users.Where(u =>
+                u.Email == login.Email).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                var validPwd = Verify(login.Password, user.PwHash);
+                if (validPwd)
+                {
+                    return login;
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Forkert brugernavn eller password");
+            return BadRequest(ModelState);
+        }
+
         // GET: api/Account/5
         [HttpGet("{id}", Name = "Get")]
         public async Task<ActionResult<UserDto>> Get(int id)
