@@ -16,7 +16,7 @@ namespace WeatherStationWebAPI.Models
 
         public float Temperature { get; set; }
 
-        public int AirMoisture { get; set; }
+        public int Humidity { get; set; }
 
         public decimal AirPressure { get; set; }
     }
