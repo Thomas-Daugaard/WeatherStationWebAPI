@@ -43,11 +43,11 @@ namespace WeatherStationWebAPI.Controllers
         }
 
         // GET: api/WeahterLogs/LastThree
-        [HttpGet]
+        [HttpGet("Three")]
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetLastThreeWeatherLogs()
         {
-            var lastThreeEntries = await _context.WeatherLogs.OrderByDescending(i => i.LogId).Take(3).ToListAsync();
-            
+            var lastThreeEntries = await _context.WeatherLogs.OrderByDescending(i => i.LogId).Take(3).Include(p=>p.LogPlace).ToListAsync();
+
             if (lastThreeEntries == null)
             {
                 return NotFound();
@@ -56,10 +56,10 @@ namespace WeatherStationWebAPI.Controllers
             return lastThreeEntries;
         }
 
-        [HttpGet]
+        [HttpGet("LogDate")]
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetAllWeatherLogsForDate(DateTime date)
         {
-            var allMeasurementsForDate = await _context.WeatherLogs.Where(d => d.LogTime.Date == date.Date).ToListAsync();
+            var allMeasurementsForDate = await _context.WeatherLogs.Where(d => d.LogTime.Date == date.Date).Include(p=>p.LogPlace).ToListAsync();
 
             if (allMeasurementsForDate == null)
             {
@@ -69,10 +69,10 @@ namespace WeatherStationWebAPI.Controllers
             return allMeasurementsForDate;
         }
 
-        [HttpGet]
+        [HttpGet("LogRange")]
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetWeatherLogsForTimeframe(DateTime startTime, DateTime endTime)
         {
-            var AllMeasurementsForTimeframe = await _context.WeatherLogs.Where(s => s.LogTime >= startTime).Where(e => e.LogTime <= endTime).ToListAsync();
+            var AllMeasurementsForTimeframe = await _context.WeatherLogs.Where(s => s.LogTime >= startTime).Where(e => e.LogTime <= endTime).Include(p=>p.LogPlace).ToListAsync();
 
             if (AllMeasurementsForTimeframe == null)
             {
