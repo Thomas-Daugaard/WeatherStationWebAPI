@@ -12,7 +12,7 @@ namespace WeatherStationWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private const int BcryptWorkfactor = 10;
