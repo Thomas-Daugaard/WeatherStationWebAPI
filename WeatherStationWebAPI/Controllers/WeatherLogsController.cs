@@ -47,6 +47,11 @@ namespace WeatherStationWebAPI.Controllers
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetLastThreeWeatherLogs()
         {
             var lastThreeEntries = await _context.WeatherLogs.OrderByDescending(i => i.LogId).Take(3).ToListAsync();
+            
+            if (lastThreeEntries == null)
+            {
+                return NotFound();
+            }
 
             return lastThreeEntries;
         }
@@ -56,6 +61,11 @@ namespace WeatherStationWebAPI.Controllers
         {
             var allMeasurementsForDate = await _context.WeatherLogs.Where(d => d.LogTime.Date == date.Date).ToListAsync();
 
+            if (allMeasurementsForDate == null)
+            {
+                return NotFound();
+            }
+
             return allMeasurementsForDate;
         }
 
@@ -63,7 +73,13 @@ namespace WeatherStationWebAPI.Controllers
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetWeatherLogsForTimeframe(DateTime startTime, DateTime endTime)
         {
             var AllMeasurementsForTimeframe = await _context.WeatherLogs.Where(s => s.LogTime >= startTime).Where(e => e.LogTime <= endTime).ToListAsync();
-            return null;
+
+            if (AllMeasurementsForTimeframe == null)
+            {
+                return NotFound();
+            }
+
+            return AllMeasurementsForTimeframe;
         }
 
         // PUT: api/WeatherLogs/5
