@@ -10,8 +10,8 @@ using WeatherStationWebAPI.Data;
 namespace WeatherStationWebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210503132741_AttachedLogRemoved")]
-    partial class AttachedLogRemoved
+    [Migration("20210506094533_addedplacestoUserEntitytotracksignup")]
+    partial class addedplacestoUserEntitytotracksignup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,10 +23,8 @@ namespace WeatherStationWebAPI.Migrations
 
             modelBuilder.Entity("WeatherStationWebAPI.Models.Place", b =>
                 {
-                    b.Property<int>("PlaceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<long>("PlaceId")
+                        .HasColumnType("bigint");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
@@ -86,8 +84,8 @@ namespace WeatherStationWebAPI.Migrations
                     b.Property<DateTime>("LogTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PlaceId")
-                        .HasColumnType("int");
+                    b.Property<long?>("PlaceId")
+                        .HasColumnType("bigint");
 
                     b.Property<float>("Temperature")
                         .HasColumnType("real");
@@ -99,6 +97,15 @@ namespace WeatherStationWebAPI.Migrations
                     b.ToTable("WeatherLogs");
                 });
 
+            modelBuilder.Entity("WeatherStationWebAPI.Models.Place", b =>
+                {
+                    b.HasOne("WeatherStationWebAPI.Models.User", null)
+                        .WithMany("SignedUpPlaces")
+                        .HasForeignKey("PlaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("WeatherStationWebAPI.Models.WeatherLog", b =>
                 {
                     b.HasOne("WeatherStationWebAPI.Models.Place", "LogPlace")
@@ -106,6 +113,11 @@ namespace WeatherStationWebAPI.Migrations
                         .HasForeignKey("PlaceId");
 
                     b.Navigation("LogPlace");
+                });
+
+            modelBuilder.Entity("WeatherStationWebAPI.Models.User", b =>
+                {
+                    b.Navigation("SignedUpPlaces");
                 });
 #pragma warning restore 612, 618
         }

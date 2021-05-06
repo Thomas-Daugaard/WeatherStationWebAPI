@@ -5,8 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.Models;
+using WeatherStationWebAPI.WebSocket;
 
 namespace WeatherStationWebAPI.Controllers
 {
@@ -15,10 +21,12 @@ namespace WeatherStationWebAPI.Controllers
     public class WeatherLogsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private IHubContext<WeatherHub> _weatherHub;
 
-        public WeatherLogsController(ApplicationDbContext context)
+        public WeatherLogsController(ApplicationDbContext context, IHubContext<WeatherHub> hub)
         {
             _context = context;
+            _weatherHub = hub;
         }
 
         // GET: api/WeatherLogs
@@ -100,7 +108,6 @@ namespace WeatherStationWebAPI.Controllers
 
             _context.Entry(weatherLog).State = EntityState.Modified;
 
-            //Send SignalR Message to all signed up users
 
             try
             {
@@ -128,8 +135,15 @@ namespace WeatherStationWebAPI.Controllers
         public async Task<ActionResult<WeatherLog>> PostWeatherLog(WeatherLog weatherLog)
         {
             _context.WeatherLogs.Add(weatherLog);
-            //Send SignalR Message to all signed up users
+
             await _context.SaveChangesAsync();
+
+            //==================  SignalR ===================
+            var placeid = weatherLog.LogPlace.PlaceId;
+            var users = _context.Users.SelectMany(d => d.SignedUpPlaces).Where(l => l.PlaceId == placeid).ToList();
+            //_weatherHub.Clients.Users(users)
+            //Send SignalR Message to all signed up users
+
 
             return CreatedAtAction("GetWeatherLog", new { id = weatherLog.LogId }, weatherLog);
         }
