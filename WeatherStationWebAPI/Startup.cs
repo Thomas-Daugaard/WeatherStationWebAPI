@@ -38,6 +38,8 @@ namespace WeatherStationWebAPI
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ThomasConnectionString")));
 
+            services.AddOptions();
+
             services.AddControllers();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
