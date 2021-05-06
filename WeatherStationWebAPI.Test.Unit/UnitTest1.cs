@@ -25,7 +25,7 @@ namespace WeatherStationWebAPI.Test.Unit
         [SetUp]
         public void Setup()
         {
-            var context = new ApplicationDbContext(
+            _context = new ApplicationDbContext(
                 new DbContextOptionsBuilder<ApplicationDbContext>()
                     .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=NGKWeatherAPI;Trusted_Connection=True;MultipleActiveResultSets=true").Options);
 
@@ -34,35 +34,40 @@ namespace WeatherStationWebAPI.Test.Unit
             {
                 SecretKey = "ncSK45=)7@#qwKDSopevvkj3274687236"
             };
+
             _appSettings = Options.Create(settings);
 
             _uut = new AccountController(_context, _appSettings);
         }
 
-        [Test]
-        public void Register_RegisterUser_ReceivedCorrectStatusCode()
-        {
-            var user = new UserDto()
-                { FirstName = "Kurt", LastName = "Poulsen", Email = "kp@somemail.com", Password = "Password1234" };
+        //[Test]
+        //public void Register_RegisterUser_ReceivedCorrectStatusCode()
+        //{
+        //    var user = new UserDto()
+        //        { FirstName = "Kurt", LastName = "Poulsen", Email = "kp@somemail.com", Password = "Password1234" };
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44301/api/");
-                var postTask = client.PostAsJsonAsync<UserDto>("account/register", user);
-                postTask.Wait();
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri("https://localhost:44301/api/");
+        //        var postTask = client.PostAsJsonAsync<UserDto>("account/register", user);
+        //        postTask.Wait();
 
-                var result = postTask.Result;
-                Assert.That(result.StatusCode, Is.EqualTo("Created"));
-            }
-        }
+        //        var result = postTask.Result;
+        //        Assert.That(result.StatusCode, Is.EqualTo("Created"));
+        //    }
+        //}
 
         [Test]
         public async Task Test2()
         {
-            var response = await _uut.Register(new UserDto()
-                {Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234"});
+            var user = new UserDto()
+                {Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234"};
 
-            Assert.That(response.Result, Is.EqualTo(""));
+            var response = await _uut.Register(user);
+
+            var result = response.Result as CreatedResult;
+
+            Assert.NotNull(result);
         }
     }
 }
