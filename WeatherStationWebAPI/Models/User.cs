@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,5 +19,8 @@ namespace WeatherStationWebAPI.Models
         public string Email { get; set; }
         [MaxLength(60)]
         public string PwHash { get; set; }
+
+        [ForeignKey("PlaceId")]
+        public List<Place> SignedUpPlaces { get; set; }
     }
 }
