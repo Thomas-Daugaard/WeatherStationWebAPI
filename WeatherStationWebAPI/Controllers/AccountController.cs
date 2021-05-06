@@ -84,6 +84,18 @@ namespace WeatherStationWebAPI.Controllers
             return userDto;
         }
 
+        [HttpPut("Signup")]
+        public async void SingUpToPlaceWeatherStation(long userId, long placeId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            var place = await _context.Places.FindAsync(placeId);
+
+            user.SignedUpPlaces.Add(place);
+
+            await _context.SaveChangesAsync();
+        }
+
 
         private string GenerateToken(User user)
         {
