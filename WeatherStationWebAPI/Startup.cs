@@ -37,8 +37,8 @@ namespace WeatherStationWebAPI
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CamillaConnectionString")));
-            
 
+            services.AddCors();
             services.AddControllers();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -85,6 +85,12 @@ namespace WeatherStationWebAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(o =>
+            o.AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .SetIsOriginAllowed(x => _ = true));
 
             app.UseRouting();
 
