@@ -26,12 +26,6 @@ namespace WeatherStationWebAPI.Controllers
         private const int BcryptWorkfactor = 10;
         private IHubContext<WeatherHub> _hub;
 
-        public AccountController(ApplicationDbContext context, IOptions<AppSettings> appSettings)
-        {
-            _context = context;
-            _appSettings = appSettings.Value;
-        }
-
         public AccountController(ApplicationDbContext context, IOptions<AppSettings> appSettings, IHubContext<WeatherHub> hub)
         {
             _context = context;

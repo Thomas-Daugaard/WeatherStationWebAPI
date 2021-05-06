@@ -1,18 +1,16 @@
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NSubstitute;
 using NUnit.Framework;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.IdentityModel.JsonWebTokens;
+using NSubstitute;
 using WeatherStationWebAPI.Controllers;
 using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.Models;
+using WeatherStationWebAPI.WebSocket;
 
 namespace WeatherStationWebAPI.Test.Unit
 {
@@ -20,14 +18,15 @@ namespace WeatherStationWebAPI.Test.Unit
     {
         private ApplicationDbContext _context;
         private IOptions<AppSettings> _appSettings;
-        private AccountController _uut;
+        private IHubContext<WeatherHub> _mockHub;
+        private AccountController _accountController;
 
         [SetUp]
         public void Setup()
         {
             _context = new ApplicationDbContext(
                 new DbContextOptionsBuilder<ApplicationDbContext>()
-                    .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=NGKWeatherAPI;Trusted_Connection=True;MultipleActiveResultSets=true").Options);
+                    .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NGKWeatherAPI;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False").Options);
 
 
             var settings = new AppSettings()
@@ -37,7 +36,9 @@ namespace WeatherStationWebAPI.Test.Unit
 
             _appSettings = Options.Create(settings);
 
-            //_uut = new AccountController(_context, _appSettings);
+            _mockHub = Substitute.For<IHubContext<WeatherHub>>();
+
+            _accountController = new AccountController(_context, _appSettings, _mockHub);
         }
 
         //[Test]
@@ -58,16 +59,36 @@ namespace WeatherStationWebAPI.Test.Unit
         //}
 
         [Test]
-        public async Task Test2()
+        public async Task AccountController_RegisterUser_ResponseCreated()
         {
             var user = new UserDto()
                 {Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234"};
 
-            var response = await _uut.Register(user);
+            var response = await _accountController.Register(user);
 
-            var result = response.Result as CreatedResult;
+            var result = response.Result as CreatedAtActionResult;
 
             Assert.NotNull(result);
+        }
+
+        [Test]
+        public async Task AccountController_LoginUser_ResponseCreated()
+        {
+            var user = new UserDto()
+                { Email = "ml@somemail.com", Password = "Password1234" };
+
+            var response = await _accountController.Login(user);
+
+            var token = response.Value.JWT;
+
+            Assert.AreEqual(token, response.Value.JWT);
+
+            // cleanup
+
+            var userToDelete = _context.Users.SingleOrDefault(u => u.Email == user.Email);
+            if(userToDelete != null)
+                _context.Users.Remove(userToDelete);
+            _context.SaveChanges();
         }
     }
 }
