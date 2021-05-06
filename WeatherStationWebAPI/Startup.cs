@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WeatherStationWebAPI.Data;
@@ -35,6 +36,8 @@ namespace WeatherStationWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("EmilConnectionString")));
+            
                     options.UseSqlServer(Configuration.GetConnectionString("ThomasConnectionString")));
 
             services.AddControllers();
@@ -68,7 +71,7 @@ namespace WeatherStationWebAPI
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -87,6 +90,10 @@ namespace WeatherStationWebAPI
             app.UseRouting();
 
             app.UseAuthentication();
+
+            SeedUsers(context);
+            SeedWeatherLog(context);
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -96,6 +103,100 @@ namespace WeatherStationWebAPI
                     pattern: "{controller=Account}/{action=Login}");
                 endpoints.MapHub<WeatherHub>("/weatherHub"); //For SignalR
             });
+        }
+
+        public void SeedUsers(ApplicationDbContext context)
+        {
+            var exists = context.Users.SingleOrDefault(d=>d.UserId == 1);
+            if (exists != null)
+            {
+
+            }
+            else
+            {
+                List<User> users = new List<User>()
+                {
+                    new User()
+                    {
+                        FirstName = "Hans",
+                        LastName = "Hansen",
+                        Email = "test1@testesen.dk"
+                    },
+                    new User()
+                    {
+                        FirstName = "Peter",
+                        LastName = "Petersen",
+                        Email = "test2@testesen.dk"
+                    },
+                    new User()
+                    {
+                        FirstName = "Kurt",
+                        LastName = "Kurtesen",
+                        Email = "test3@testesen.dk"
+                    }
+                };
+
+                foreach (var item in users)
+                {
+                    context.Users.Add(item);
+                }
+
+                context.SaveChanges();
+            }
+           
+        }
+
+        public void SeedWeatherLog(ApplicationDbContext context)
+        {
+            var exists = context.WeatherLogs.SingleOrDefault(d => d.LogId == 1);
+
+            if (exists != null)
+            {
+
+            }
+            else
+            {
+                Place place1 = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" };
+                Place place2 = new Place() { Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
+                Place place3 = new Place() { Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers" };
+
+                WeatherLog firstlog = new WeatherLog()
+                {
+                    LogTime = Convert.ToDateTime("10-10-2021"),
+                    LogPlace = place1,
+                    Temperature = 24,
+                    Humidity = 80,
+                    AirPressure = 50
+                };
+
+                context.WeatherLogs.Add(firstlog);
+                context.SaveChanges();
+
+                WeatherLog secondlog = new WeatherLog()
+                {
+                    LogTime = Convert.ToDateTime("10-10-2021"),
+                    LogPlace = place2,
+                    Temperature = 24,
+                    Humidity = 80,
+                    AirPressure = 50
+                };
+
+                context.WeatherLogs.Add(secondlog);
+                context.SaveChanges();
+
+                WeatherLog thirdlog = new WeatherLog()
+                {
+                    LogTime = Convert.ToDateTime("10-10-2021"),
+                    LogPlace = place3,
+                    Temperature = 24,
+                    Humidity = 80,
+                    AirPressure = 50
+                };
+
+                context.WeatherLogs.Add(thirdlog);
+                context.SaveChanges();
+            }
+            
         }
     }
 }

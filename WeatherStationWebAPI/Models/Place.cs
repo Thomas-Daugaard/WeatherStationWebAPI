@@ -18,8 +18,8 @@ namespace WeatherStationWebAPI.Models
 
         public double Longitude { get; set; }
 
-        [ForeignKey("LogId")]
-        public WeatherLog AttachedLog { get; set; }
+        //[ForeignKey("LogId")]
+        //public WeatherLog AttachedLog { get; set; }
 
 
     }

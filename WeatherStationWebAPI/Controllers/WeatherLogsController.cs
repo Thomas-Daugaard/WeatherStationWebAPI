@@ -101,6 +101,8 @@ namespace WeatherStationWebAPI.Controllers
 
             _context.Entry(weatherLog).State = EntityState.Modified;
 
+            //Send SignalR Message to all signed up users
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -127,6 +129,7 @@ namespace WeatherStationWebAPI.Controllers
         public async Task<ActionResult<WeatherLog>> PostWeatherLog(WeatherLog weatherLog)
         {
             _context.WeatherLogs.Add(weatherLog);
+            //Send SignalR Message to all signed up users
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetWeatherLog", new { id = weatherLog.LogId }, weatherLog);
