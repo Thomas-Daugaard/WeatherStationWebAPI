@@ -337,30 +337,27 @@ namespace WeatherStationWebAPI
             
         }
 
-        //public async void SignUpUserToPlace(ApplicationDbContext context)
-        //{
-        //    WeatherHub temp = new WeatherHub();
+        public void SignUpUserToPlace(ApplicationDbContext context)
+        {
+            WeatherHub temp = new WeatherHub();
 
-        //    var exists = context.Users.SingleOrDefault(d => d.UserId == 1);
-        //    if (exists != null)
-        //    {
+            var tempuser = context.Users.Include(d=>d.SignedUpPlaces).SingleOrDefault(d=>d.UserId==(long)1);
 
-        //    }
-        //    else
-        //    {
-        //        var user = context.Users.SingleOrDefault(d => d.UserId == 1);
-        //        var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
+            if (tempuser != null)
+            {
 
-        //        if (user != null)
-        //        {
-        //            user.SignedUpPlaces.Add(place);
+                if (!tempuser.SignedUpPlaces.Exists(d=>d.PlaceId==1))
+                {
+                    var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
 
-        //            await context.SaveChangesAsync();
+                    tempuser.SignedUpPlaces.Add(place);
 
-        //            temp.JoinGroup(1);
-        //        }
+                    context.SaveChanges();
 
-        //    }
-        //}
+                    //temp.JoinGroup(1);
+                }
+            }
+
+        }
     }
 }
