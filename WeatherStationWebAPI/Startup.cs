@@ -233,26 +233,22 @@ namespace WeatherStationWebAPI
         {
             WeatherHub temp = new WeatherHub();
 
-            var exists = context.Users.SingleOrDefault(d => d.UserId == 1);
-            if (exists != null)
-            {
+            var user = context.Users.SingleOrDefault(d => d.UserId == 1);
 
-            }
-            else
+            if (user != null)
             {
-                var user = context.Users.SingleOrDefault(d => d.UserId == 1);
-                var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
-
-                if (user != null)
+                if (user.SignedUpPlaces[0] == null)
                 {
+                    var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
+
                     user.SignedUpPlaces.Add(place);
 
                     await context.SaveChangesAsync();
 
                     temp.JoinGroup(1);
                 }
-
             }
+
         }
     }
 }
