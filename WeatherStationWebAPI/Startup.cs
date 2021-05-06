@@ -100,7 +100,7 @@ namespace WeatherStationWebAPI
             SeedPlaces(context);
             SeedUsers(context);
             SeedWeatherLog(context);
-            //SignUpUserToPlace(context);
+            SignUpUserToPlace(context);
 
             app.UseAuthorization();
 
@@ -229,30 +229,30 @@ namespace WeatherStationWebAPI
             
         }
 
-        //public async void SignUpUserToPlace(ApplicationDbContext context)
-        //{
-        //    WeatherHub temp = new WeatherHub();
+        public async void SignUpUserToPlace(ApplicationDbContext context)
+        {
+            WeatherHub temp = new WeatherHub();
 
-        //    var exists = context.Users.SingleOrDefault(d => d.UserId == 1);
-        //    if (exists != null)
-        //    {
+            var exists = context.Users.SingleOrDefault(d => d.UserId == 1);
+            if (exists != null)
+            {
 
-        //    }
-        //    else
-        //    {
-        //        var user = context.Users.SingleOrDefault(d => d.UserId == 1);
-        //        var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
+            }
+            else
+            {
+                var user = context.Users.SingleOrDefault(d => d.UserId == 1);
+                var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
 
-        //        if (user != null)
-        //        {
-        //            user.SignedUpPlaces.Add(place);
+                if (user != null)
+                {
+                    user.SignedUpPlaces.Add(place);
 
-        //            await context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
 
-        //            temp.JoinGroup(1);
-        //        }
+                    temp.JoinGroup(1);
+                }
 
-        //    }
-        //}
+            }
+        }
     }
 }
