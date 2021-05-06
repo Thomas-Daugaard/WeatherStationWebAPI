@@ -37,7 +37,7 @@ namespace WeatherStationWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ThomasConnectionString")));
+                    options.UseSqlServer(Configuration.GetConnectionString("AlexConnectionString")));
 
             services.AddCors();
             services.AddControllers();
@@ -96,11 +96,12 @@ namespace WeatherStationWebAPI
             app.UseRouting();
 
             app.UseAuthentication();
-
-            SeedPlaces(context);
+            
             SeedUsers(context);
+            SeedPlaces(context);
             SeedWeatherLog(context);
-            SignUpUserToPlace(context);
+            
+            //SignUpUserToPlace(context);
 
             app.UseAuthorization();
 
@@ -164,9 +165,9 @@ namespace WeatherStationWebAPI
             }
             else
             {
-                Place place1 = new Place() {  Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" };
-                Place place2 = new Place() {  Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
-                Place place3 = new Place() {  Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers" };
+                Place place1 = new Place() {  Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya"};
+                Place place2 = new Place() {  Latitude = 11.10, Longitude = 11.10, PlaceName = "K2"};
+                Place place3 = new Place() {  Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers"};
                 context.Places.Add(place1);
                 context.Places.Add(place2);
                 context.Places.Add(place3);
@@ -188,17 +189,124 @@ namespace WeatherStationWebAPI
                 var places = context.Places.ToList();
                 foreach (var place in places)
                 {
-                    WeatherLog log = new WeatherLog()
+                    if (place.PlaceId == 1)
                     {
-                        LogTime = Convert.ToDateTime("10-10-2021"),
-                        LogPlace = place,
-                        Temperature = 24,
-                        Humidity = 80,
-                        AirPressure = 50
-                    };
+                        DateTime date1 = new DateTime(2021, 10, 8, 8, 00, 00);
+                        WeatherLog log1 = new WeatherLog()
+                        {
+                            LogTime = date1,
+                            LogPlace = place,
+                            Temperature = 24,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
 
-                    context.WeatherLogs.Add(log);
-                    context.SaveChanges();
+                        context.WeatherLogs.Add(log1);
+                        context.SaveChanges();
+                        DateTime date2 = new DateTime(2021, 10, 9, 8, 00, 00);
+                        WeatherLog log2 = new WeatherLog()
+                        {
+                            LogTime = date2,
+                            LogPlace = place,
+                            Temperature = 20,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
+
+                        context.WeatherLogs.Add(log2);
+                        context.SaveChanges();
+                        DateTime date3 = new DateTime(2021, 10, 9, 12, 30, 00);
+                        WeatherLog log3 = new WeatherLog()
+                        {
+                            LogTime = date3,
+                            LogPlace = place,
+                            Temperature = 21,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
+
+                        context.WeatherLogs.Add(log3);
+                        context.SaveChanges();
+                        DateTime date4 = new DateTime(2021, 10, 9, 16, 40, 00);
+                        WeatherLog log4 = new WeatherLog()
+                        {
+                            LogTime = date4,
+                            LogPlace = place,
+                            Temperature = 22,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
+
+                        context.WeatherLogs.Add(log4);
+                        context.SaveChanges();
+
+                        DateTime date5 = new DateTime(2021, 10, 10, 18, 20, 00);
+                        WeatherLog log5 = new WeatherLog()
+                        {
+                            LogTime = date5,
+                            LogPlace = place,
+                            Temperature = 23,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
+
+                        context.WeatherLogs.Add(log5);
+                        context.SaveChanges();
+                    }
+
+                    if (place.PlaceId == 2)
+                    {
+                        WeatherLog log1 = new WeatherLog()
+                        {
+                            LogTime = Convert.ToDateTime("10-10-2021"),
+                            LogPlace = place,
+                            Temperature = 18,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
+
+                        context.WeatherLogs.Add(log1);
+                        context.SaveChanges();
+
+                        WeatherLog log2 = new WeatherLog()
+                        {
+                            LogTime = Convert.ToDateTime("11-10-2021"),
+                            LogPlace = place,
+                            Temperature = 16,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
+
+                        context.WeatherLogs.Add(log2);
+                        context.SaveChanges();
+                    }
+
+                    if (place.PlaceId == 3)
+                    {
+                        WeatherLog log1 = new WeatherLog()
+                        {
+                            LogTime = Convert.ToDateTime("12-10-2021"),
+                            LogPlace = place,
+                            Temperature = 28,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
+
+                        context.WeatherLogs.Add(log1);
+                        context.SaveChanges();
+                        WeatherLog log2 = new WeatherLog()
+                        {
+                            LogTime = Convert.ToDateTime("13-10-2021"),
+                            LogPlace = place,
+                            Temperature = 24,
+                            Humidity = 80,
+                            AirPressure = 50
+                        };
+
+                        context.WeatherLogs.Add(log2);
+                        context.SaveChanges();
+                    }
+                    
                 }
                 
 
