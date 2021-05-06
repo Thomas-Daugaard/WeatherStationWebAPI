@@ -10,10 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WeatherStationWebAPI.Data;
+using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.WebSocket;
 
 namespace WeatherStationWebAPI
@@ -32,7 +36,7 @@ namespace WeatherStationWebAPI
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ThomasConnectionString")));
-            
+
             services.AddControllers();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -61,6 +65,7 @@ namespace WeatherStationWebAPI
 
             services.AddSignalR();
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

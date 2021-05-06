@@ -10,8 +10,8 @@ using WeatherStationWebAPI.Data;
 namespace WeatherStationWebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210503121821_ForeignKeyAdded")]
-    partial class ForeignKeyAdded
+    [Migration("20210506082258_NewInitialCreate")]
+    partial class NewInitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace WeatherStationWebAPI.Controllers
 
         // GET: api/WeatherLogs
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetWeatherLogs()
         {
             return await _context.WeatherLogs.ToListAsync();
@@ -30,6 +32,7 @@ namespace WeatherStationWebAPI.Controllers
 
         // GET: api/WeatherLogs/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<WeatherLog>> GetWeatherLog(int id)
         {
             var weatherLog = await _context.WeatherLogs.FindAsync(id);
@@ -44,6 +47,7 @@ namespace WeatherStationWebAPI.Controllers
 
         // GET: api/WeahterLogs/LastThree
         [HttpGet("Three")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetLastThreeWeatherLogs()
         {
             var lastThreeEntries = await _context.WeatherLogs.OrderByDescending(i => i.LogId).Take(3).Include(p=>p.LogPlace).ToListAsync();
@@ -57,6 +61,7 @@ namespace WeatherStationWebAPI.Controllers
         }
 
         [HttpGet("LogDate")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetAllWeatherLogsForDate(DateTime date)
         {
             var allMeasurementsForDate = await _context.WeatherLogs.Where(d => d.LogTime.Date == date.Date).Include(p=>p.LogPlace).ToListAsync();
@@ -70,6 +75,7 @@ namespace WeatherStationWebAPI.Controllers
         }
 
         [HttpGet("LogRange")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<WeatherLog>>> GetWeatherLogsForTimeframe(DateTime startTime, DateTime endTime)
         {
             var AllMeasurementsForTimeframe = await _context.WeatherLogs.Where(s => s.LogTime >= startTime).Where(e => e.LogTime <= endTime).Include(p=>p.LogPlace).ToListAsync();
@@ -85,6 +91,7 @@ namespace WeatherStationWebAPI.Controllers
         // PUT: api/WeatherLogs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutWeatherLog(int id, WeatherLog weatherLog)
         {
             if (id != weatherLog.LogId)
@@ -116,6 +123,7 @@ namespace WeatherStationWebAPI.Controllers
         // POST: api/WeatherLogs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<WeatherLog>> PostWeatherLog(WeatherLog weatherLog)
         {
             _context.WeatherLogs.Add(weatherLog);

@@ -3,22 +3,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WeatherStationWebAPI.Migrations
 {
-    public partial class addedwetaherentityandplaceentity : Migration
+    public partial class NewInitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_User",
-                table: "User");
-
-            migrationBuilder.RenameTable(
-                name: "User",
-                newName: "Users");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Users",
-                table: "Users",
-                column: "UserId");
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: true),
+                    PwHash = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                });
 
             migrationBuilder.CreateTable(
                 name: "WeatherLogs",
@@ -27,8 +30,9 @@ namespace WeatherStationWebAPI.Migrations
                     LogId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LogTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PlaceId = table.Column<int>(type: "int", nullable: true),
                     Temperature = table.Column<float>(type: "real", nullable: false),
-                    AirMoisture = table.Column<int>(type: "int", nullable: false),
+                    Humidity = table.Column<int>(type: "int", nullable: false),
                     AirPressure = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -61,31 +65,36 @@ namespace WeatherStationWebAPI.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Places_LogId",
                 table: "Places",
-                column: "LogId",
-                unique: true,
-                filter: "[LogId] IS NOT NULL");
+                column: "LogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeatherLogs_PlaceId",
+                table: "WeatherLogs",
+                column: "PlaceId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_WeatherLogs_Places_PlaceId",
+                table: "WeatherLogs",
+                column: "PlaceId",
+                principalTable: "Places",
+                principalColumn: "PlaceId",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Places_WeatherLogs_LogId",
+                table: "Places");
+
             migrationBuilder.DropTable(
-                name: "Places");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "WeatherLogs");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Users",
-                table: "Users");
-
-            migrationBuilder.RenameTable(
-                name: "Users",
-                newName: "User");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_User",
-                table: "User",
-                column: "UserId");
+            migrationBuilder.DropTable(
+                name: "Places");
         }
     }
 }
