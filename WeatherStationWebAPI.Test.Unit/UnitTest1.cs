@@ -36,7 +36,7 @@ namespace WeatherStationWebAPI.Test.Unit
             };
             _appSettings = Options.Create(settings);
 
-            _uut = new AccountController(_context, _appSettings);
+            //_uut = new AccountController(_context, _appSettings);
         }
 
         [Test]

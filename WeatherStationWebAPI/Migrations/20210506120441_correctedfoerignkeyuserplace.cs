@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WeatherStationWebAPI.Migrations
 {
-    public partial class addedplacestoUserEntitytotracksignup : Migration
+    public partial class correctedfoerignkeyuserplace : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,20 +27,22 @@ namespace WeatherStationWebAPI.Migrations
                 name: "Places",
                 columns: table => new
                 {
-                    PlaceId = table.Column<long>(type: "bigint", nullable: false),
+                    PlaceId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PlaceName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Places", x => x.PlaceId);
                     table.ForeignKey(
-                        name: "FK_Places_Users_PlaceId",
-                        column: x => x.PlaceId,
+                        name: "FK_Places_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +67,11 @@ namespace WeatherStationWebAPI.Migrations
                         principalColumn: "PlaceId",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Places_UserId",
+                table: "Places",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WeatherLogs_PlaceId",
