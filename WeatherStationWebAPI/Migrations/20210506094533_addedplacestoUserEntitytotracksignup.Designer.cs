@@ -10,7 +10,7 @@ using WeatherStationWebAPI.Data;
 namespace WeatherStationWebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210506094118_addedplacestoUserEntitytotracksignup")]
+    [Migration("20210506094533_addedplacestoUserEntitytotracksignup")]
     partial class addedplacestoUserEntitytotracksignup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
