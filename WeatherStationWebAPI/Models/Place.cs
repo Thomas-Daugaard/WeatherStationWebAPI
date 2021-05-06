@@ -17,10 +17,5 @@ namespace WeatherStationWebAPI.Models
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
-
-        //[ForeignKey("LogId")]
-        //public WeatherLog AttachedLog { get; set; }
-
-
     }
 }

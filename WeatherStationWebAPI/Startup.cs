@@ -37,7 +37,7 @@ namespace WeatherStationWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CamillaConnectionString")));
+                    options.UseSqlServer(Configuration.GetConnectionString("EmilConnectionString")));
 
             services.AddCors();
             services.AddControllers();
@@ -164,9 +164,9 @@ namespace WeatherStationWebAPI
             }
             else
             {
-                Place place1 = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" };
-                Place place2 = new Place() { Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
-                Place place3 = new Place() { Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers" };
+                Place place1 = new Place() {  Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" };
+                Place place2 = new Place() {  Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
+                Place place3 = new Place() {  Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers" };
                 context.Places.Add(place1);
                 context.Places.Add(place2);
                 context.Places.Add(place3);
