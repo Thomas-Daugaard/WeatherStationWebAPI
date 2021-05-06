@@ -131,10 +131,24 @@ namespace WeatherStationWebAPI.Controllers
 
         // POST: api/WeatherLogs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("PostWeather")]
         [Authorize]
-        public async Task<ActionResult<WeatherLog>> PostWeatherLog(WeatherLog weatherLog)
+        public async Task<ActionResult<WeatherLog>> PostWeatherLog(WeatherLogDto weatherLogDto)
         {
+            var place = await _context.Places.FindAsync(weatherLogDto.LogPlaceId);
+            if (place == null)
+            {
+                return NotFound();
+            }
+            WeatherLog weatherLog = new WeatherLog()
+            {
+                LogTime = weatherLogDto.LogTime,
+                LogPlace = place,
+                Temperature = weatherLogDto.Temperature,
+                Humidity = weatherLogDto.Humidity,
+                AirPressure = weatherLogDto.AirPressure
+            };
+
             _context.WeatherLogs.Add(weatherLog);
 
             await _context.SaveChangesAsync();
@@ -145,8 +159,8 @@ namespace WeatherStationWebAPI.Controllers
 
             var jsonmsg = JsonConvert.SerializeObject(weatherLog);
             await _weatherHub.Clients.Group(placeid.ToString()).SendAsync("Update", jsonmsg); //Send SignalR Message to all signed up users
-
             return CreatedAtAction("GetWeatherLog", new { id = weatherLog.LogId }, weatherLog);
+
         }
 
         // DELETE: api/WeatherLogs/5
