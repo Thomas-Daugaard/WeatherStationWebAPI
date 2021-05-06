@@ -10,7 +10,7 @@ namespace WeatherStationWebAPI.Models
     public class Place
     {
         [Key]
-        public int PlaceId { get; set; }
+        public long PlaceId { get; set; }
 
         public string PlaceName { get; set; }
 
