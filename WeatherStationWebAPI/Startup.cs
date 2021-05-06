@@ -37,7 +37,7 @@ namespace WeatherStationWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CamillaConnectionString")));
+                    options.UseSqlServer(Configuration.GetConnectionString("EmilConnectionString")));
 
             services.AddCors();
             services.AddControllers();
@@ -100,7 +100,7 @@ namespace WeatherStationWebAPI
             SeedPlaces(context);
             SeedUsers(context);
             SeedWeatherLog(context);
-            //SignUpUserToPlace(context);
+            SignUpUserToPlace(context);
 
             app.UseAuthorization();
 
@@ -164,9 +164,9 @@ namespace WeatherStationWebAPI
             }
             else
             {
-                Place place1 = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" };
-                Place place2 = new Place() { Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
-                Place place3 = new Place() { Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers" };
+                Place place1 = new Place() {  Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" };
+                Place place2 = new Place() {  Latitude = 11.10, Longitude = 11.10, PlaceName = "K2" };
+                Place place3 = new Place() {  Latitude = 12.10, Longitude = 12.10, PlaceName = "Randers" };
                 context.Places.Add(place1);
                 context.Places.Add(place2);
                 context.Places.Add(place3);
@@ -233,26 +233,22 @@ namespace WeatherStationWebAPI
         //{
         //    WeatherHub temp = new WeatherHub();
 
-        //    var exists = context.Users.SingleOrDefault(d => d.UserId == 1);
-        //    if (exists != null)
-        //    {
+        //    var user = context.Users.SingleOrDefault(d => d.UserId == 1);
 
-        //    }
-        //    else
+        //    if (user != null)
         //    {
-        //        var user = context.Users.SingleOrDefault(d => d.UserId == 1);
-        //        var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
-
-        //        if (user != null)
+        //        if (user.SignedUpPlaces.Count == 0)
         //        {
+        //            var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
+
         //            user.SignedUpPlaces.Add(place);
 
         //            await context.SaveChangesAsync();
 
         //            temp.JoinGroup(1);
         //        }
-
         //    }
+
         //}
     }
 }

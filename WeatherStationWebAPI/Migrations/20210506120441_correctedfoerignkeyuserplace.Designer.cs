@@ -10,8 +10,8 @@ using WeatherStationWebAPI.Data;
 namespace WeatherStationWebAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210506094533_addedplacestoUserEntitytotracksignup")]
-    partial class addedplacestoUserEntitytotracksignup
+    [Migration("20210506120441_correctedfoerignkeyuserplace")]
+    partial class correctedfoerignkeyuserplace
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,9 @@ namespace WeatherStationWebAPI.Migrations
             modelBuilder.Entity("WeatherStationWebAPI.Models.Place", b =>
                 {
                     b.Property<long>("PlaceId")
-                        .HasColumnType("bigint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
@@ -35,7 +37,12 @@ namespace WeatherStationWebAPI.Migrations
                     b.Property<string>("PlaceName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("PlaceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Places");
                 });
@@ -101,9 +108,7 @@ namespace WeatherStationWebAPI.Migrations
                 {
                     b.HasOne("WeatherStationWebAPI.Models.User", null)
                         .WithMany("SignedUpPlaces")
-                        .HasForeignKey("PlaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("WeatherStationWebAPI.Models.WeatherLog", b =>

@@ -20,8 +20,7 @@ namespace WeatherStationWebAPI.Models
         public string Email { get; set; }
         [MaxLength(60)]
         public string PwHash { get; set; }
-
-        [ForeignKey("PlaceId")]
+        
         public List<Place> SignedUpPlaces { get; set; }
     }
 }
