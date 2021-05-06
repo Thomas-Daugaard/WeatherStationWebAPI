@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.WebSocket;
@@ -140,10 +141,10 @@ namespace WeatherStationWebAPI.Controllers
 
             //==================  SignalR ===================
             var placeid = weatherLog.LogPlace.PlaceId;
-            var users = _context.Users.SelectMany(d => d.SignedUpPlaces).Where(l => l.PlaceId == placeid).ToList();
-            //_weatherHub.Clients.Users(users)
-            //Send SignalR Message to all signed up users
+            //var users = _context.Users.SelectMany(d => d.SignedUpPlaces).Where(l => l.PlaceId == placeid).ToList();
 
+            var jsonmsg = JsonConvert.SerializeObject(weatherLog);
+            await _weatherHub.Clients.Group(placeid.ToString()).SendAsync("Update", jsonmsg); //Send SignalR Message to all signed up users
 
             return CreatedAtAction("GetWeatherLog", new { id = weatherLog.LogId }, weatherLog);
         }

@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.Data;
+using WeatherStationWebAPI.WebSocket;
 using static BCrypt.Net.BCrypt;
 
 namespace WeatherStationWebAPI.Controllers
@@ -23,11 +24,13 @@ namespace WeatherStationWebAPI.Controllers
         private readonly ApplicationDbContext _context;
         private readonly AppSettings _appSettings;
         private const int BcryptWorkfactor = 10;
+        private IHubContext<WeatherHub> _hub;
 
-        public AccountController(ApplicationDbContext context, IOptions<AppSettings> appSettings)
+        public AccountController(ApplicationDbContext context, IOptions<AppSettings> appSettings, IHubContext<WeatherHub> hub)
         {
             _context = context;
             _appSettings = appSettings.Value;
+            _hub = hub;
         }
 
         [HttpPost("register"), AllowAnonymous]
@@ -93,8 +96,9 @@ namespace WeatherStationWebAPI.Controllers
             var place = await _context.Places.FindAsync(placeId);
 
             user.SignedUpPlaces.Add(place);
-
             await _context.SaveChangesAsync();
+
+            await _hub.Groups.AddToGroupAsync(_context.Places.ToString(), place.PlaceId.ToString());
         }
 
 

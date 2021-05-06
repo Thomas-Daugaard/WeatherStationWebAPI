@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 "use strict";
-var connection = new signalR.HubConnectionBuilder().withUrl("P:\NGK\Afl3\WeatherStationWebAPI\WebSocket\WeatherHub.cs").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44301/").build();
 
 connection.on("UpdateMessage", function (user, message) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

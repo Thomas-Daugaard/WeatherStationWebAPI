@@ -17,5 +17,11 @@ namespace WeatherStationWebAPI.WebSocket
         {
             Groups.AddToGroupAsync(Context.ConnectionId, placeid.ToString());
         }
+
+        public void LeaveGroup(long placeid)
+        {
+            Groups.RemoveFromGroupAsync(Context.ConnectionId, placeid.ToString());
+        }
+
     }
 }
