@@ -237,7 +237,7 @@ namespace WeatherStationWebAPI
 
             if (user != null)
             {
-                if (user.SignedUpPlaces[0] == null)
+                if (user.SignedUpPlaces.Count == 0)
                 {
                     var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
 
