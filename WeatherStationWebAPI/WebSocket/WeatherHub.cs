@@ -12,5 +12,10 @@ namespace WeatherStationWebAPI.WebSocket
         {
             await Clients.All.SendAsync("Update:", user, message);
         }
+
+        public void JoinGroup(long placeid)
+        {
+            Groups.AddToGroupAsync(Context.ConnectionId, placeid.ToString());
+        }
     }
 }
