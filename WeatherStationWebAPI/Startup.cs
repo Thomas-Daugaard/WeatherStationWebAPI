@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing.Matching;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Options;
@@ -200,6 +201,8 @@ namespace WeatherStationWebAPI
 
         public async void SignUpUserToPlace(ApplicationDbContext context)
         {
+            WeatherHub temp = new WeatherHub();
+
             var exists = context.Users.SingleOrDefault(d => d.UserId == 1);
             if (exists != null)
             {
@@ -210,9 +213,15 @@ namespace WeatherStationWebAPI
                 var user = context.Users.SingleOrDefault(d => d.UserId == 1);
                 var place = context.Places.SingleOrDefault(o => o.PlaceId == 1);
 
-                user.SignedUpPlaces.Add(place);
+                if (user != null)
+                {
+                    user.SignedUpPlaces.Add(place);
 
-                await context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
+
+                    temp.JoinGroup(1);
+                }
+
             }
         }
     }
