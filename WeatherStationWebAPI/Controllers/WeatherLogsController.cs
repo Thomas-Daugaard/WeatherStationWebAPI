@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,12 +21,12 @@ namespace WeatherStationWebAPI.Controllers
     public class WeatherLogsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private WeatherHub _WeatherHub;
+        private IHubContext<WeatherHub> _weatherHub;
 
-        public WeatherLogsController(ApplicationDbContext context)
+        public WeatherLogsController(ApplicationDbContext context, IHubContext<WeatherHub> hub)
         {
             _context = context;
-            _WeatherHub = new WeatherHub();
+            _weatherHub = hub;
         }
 
         // GET: api/WeatherLogs
@@ -138,6 +141,7 @@ namespace WeatherStationWebAPI.Controllers
             //==================  SignalR ===================
             var placeid = weatherLog.LogPlace.PlaceId;
             var users = _context.Users.SelectMany(d => d.SignedUpPlaces).Where(l => l.PlaceId == placeid).ToList();
+            //_weatherHub.Clients.Users(users)
             //Send SignalR Message to all signed up users
 
 
