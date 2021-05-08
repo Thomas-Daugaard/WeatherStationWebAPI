@@ -72,5 +72,13 @@ namespace WeatherStationWebAPI.Test.Unit
             Assert.AreEqual(24, log.Value.Temperature);
         }
 
+        [Test]
+        public async Task GetLastThreeWeatherLogs_SeededLogs()
+        {
+            ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetLastThreeWeatherLogs();
+
+            Assert.AreEqual(3, logs.Value.Count());
+        }
+
     }
 }
