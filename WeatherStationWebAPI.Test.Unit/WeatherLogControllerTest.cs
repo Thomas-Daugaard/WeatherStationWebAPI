@@ -105,12 +105,14 @@ namespace WeatherStationWebAPI.Test.Unit
         }
 
         [Test]
+        [TestCase(8)]
         public async Task DeleteWeatherLog_SeededLogs(int id)
         {
 
         }
 
         [Test]
+        [TestCase(7)]
         public async Task WeatherLogExists_SeededLogs(int id)
         {
 
