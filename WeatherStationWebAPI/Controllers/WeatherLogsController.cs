@@ -158,7 +158,7 @@ namespace WeatherStationWebAPI.Controllers
             //var users = _context.Users.SelectMany(d => d.SignedUpPlaces).Where(l => l.PlaceId == placeid).ToList();
 
             var jsonmsg = JsonConvert.SerializeObject(weatherLog);
-            await _weatherHub.Clients.Group(placeid.ToString()).SendAsync("Update", jsonmsg); //Send SignalR Message to all signed up users
+            await _weatherHub.Clients.Group(placeid.ToString()).SendAsync("WeatherUpdate:", jsonmsg); //Send SignalR Message to all signed up users
             return CreatedAtAction("GetWeatherLog", new { id = weatherLog.LogId }, weatherLog);
 
         }
