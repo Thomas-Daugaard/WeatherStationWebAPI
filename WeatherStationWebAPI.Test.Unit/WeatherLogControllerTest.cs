@@ -80,5 +80,41 @@ namespace WeatherStationWebAPI.Test.Unit
             Assert.AreEqual(3, logs.Value.Count());
         }
 
+        [Test]
+        public async Task GetAllWeatherLogsForDate_SeededLogs(DateTime date)
+        {
+            
+        }
+
+        [Test]
+        public async Task GetWeatherLogsForTimeframe_SeededLogs(DateTime from, DateTime to)
+        {
+
+        }
+
+        [Test]
+        public async Task PutWeatherLog_SeededLogs(int id, WeatherLog log)
+        {
+
+        }
+
+        [Test]
+        public async Task PostWeatherLog_SeededLogs(WeatherLogDto weatherLog)
+        {
+
+        }
+
+        [Test]
+        public async Task DeleteWeatherLog_SeededLogs(int id)
+        {
+
+        }
+
+        [Test]
+        public async Task WeatherLogExists_SeededLogs(int id)
+        {
+
+        }
+
     }
 }
