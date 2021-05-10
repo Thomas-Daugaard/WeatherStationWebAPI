@@ -82,19 +82,19 @@ namespace WeatherStationWebAPI.Test.XUnit
 
         }
 
-        [Theory]
-        [InlineData(1, tempweatherlog)]
-        public async Task PutWeatherLog_SeededLogs(int id, WeatherLog log)
-        {
+        //[Theory]
+        //[InlineData(1, tempweatherlog)]
+        //public async Task PutWeatherLog_SeededLogs(int id, WeatherLog log)
+        //{
 
-        }
+        //}
 
-        [Theory]
-        [InlineData()]
-        public async Task PostWeatherLog_SeededLogs(WeatherLogDto weatherLog)
-        {
+        //[Theory]
+        //[InlineData()]
+        //public async Task PostWeatherLog_SeededLogs(WeatherLogDto weatherLog)
+        //{
 
-        }
+        //}
 
         [Theory]
         [InlineData(3)]
