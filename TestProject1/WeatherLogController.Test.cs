@@ -20,11 +20,13 @@ namespace WeatherStationWebAPI.Test.XUnit
 {
     public class WeatherLogControllerTest : IClassFixture<WeatherLogControllerTestFixture>
     {
-        private WeatherLogsController _weatherController;
+        protected ApplicationDbContext _context;
+        protected WeatherLogsController _weatherController;
 
-        public WeatherLogControllerTest(WeatherLogsController ctrl) :base()
+        public WeatherLogControllerTest(WeatherLogControllerTestFixture ctrl) :base()
         {
-            _weatherController = ctrl;
+            this._weatherController = ctrl._weatherController;
+            this._context = ctrl._context;
         }
 
         
