@@ -11,10 +11,10 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 {
     public class AccountControllerTestFixture : IDisposable
     {
-        public ApplicationDbContext _context;
-        public IOptions<AppSettings> _appSettings;
-        public IHubContext<WeatherHub> _mockHub;
-        public AccountController _accountController;
+        protected ApplicationDbContext _context;
+        protected IOptions<AppSettings> _appSettings;
+        protected IHubContext<WeatherHub> _mockHub;
+        protected AccountController _accountController;
 
         public AccountControllerTestFixture()
         {

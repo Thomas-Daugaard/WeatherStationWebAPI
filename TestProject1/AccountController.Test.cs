@@ -1,16 +1,17 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WeatherStationWebAPI.Controllers;
 using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.Test.XUnit.TestFixtures;
 using Xunit;
 
 namespace WeatherStationWebAPI.Test.XUnit
 {
-    public class AccountController : IClassFixture<AccountControllerTestFixture>
+    public class AccountControllerTest : IClassFixture<AccountControllerTestFixture>
     {
         private AccountController _accountController;
 
-        public AccountController(AccountController accountController) : base()
+        public AccountControllerTest(AccountController accountController) : base()
         {
             _accountController = accountController;
         }
@@ -38,7 +39,7 @@ namespace WeatherStationWebAPI.Test.XUnit
 
             var token = response.Value.JWT;
 
-            Assert.AreEqual(token, response.Value.JWT);
+            Assert.Equal(token, response.Value.JWT);
 
             // cleanup
 
