@@ -22,21 +22,15 @@ namespace WeatherStationWebAPI.Test.XUnit
     {
         protected ApplicationDbContext _context;
         protected WeatherLogsController _weatherController;
-        public WeatherLog tempweatherlog;
+        protected AccountController _accountController;
+        protected WeatherLogControllerTestFixture _fixture;
 
         public WeatherLogControllerTest(WeatherLogControllerTestFixture ctrl) :base()
         {
+            _fixture = ctrl;
             this._weatherController = ctrl._weatherController;
             this._context = ctrl._context;
-
-            tempweatherlog = new WeatherLog()
-            {
-                LogTime = new DateTime(2021, 10, 8, 8, 00, 00),
-                LogPlace = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" },
-                Temperature = 24,
-                Humidity = 80,
-                AirPressure = 50
-            };
+            this._accountController = ctrl._accountController;
         }
 
         
@@ -72,29 +66,68 @@ namespace WeatherStationWebAPI.Test.XUnit
         [InlineData("2021, 10, 8")]
         public async Task GetAllWeatherLogsForDate_SeededLogs(DateTime date)
         {
+            ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetAllWeatherLogsForDate(date);
 
+            Assert.Equal(1, logs.Value.Count());
         }
 
         [Theory]
-        [InlineData("2021, 10, 8", "2021, 10, 9")]
+        [InlineData("2021, 10, 8", "2021, 10, 10")]
         public async Task GetWeatherLogsForTimeframe_SeededLogs(DateTime from, DateTime to)
         {
+            ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogsForTimeframe(from,to);
 
+            Assert.Equal(2, logs.Value.Count());
         }
 
-        //[Theory]
-        //[InlineData(1, tempweatherlog)]
-        //public async Task PutWeatherLog_SeededLogs(int id, WeatherLog log)
-        //{
+        [Theory]
+        [InlineData(1)]
+        public async Task PutWeatherLog_SeededLogs(int id)
+        {
 
-        //}
+            WeatherLog tempweatherlog = new WeatherLog()
+            {
+                LogTime = new DateTime(2021, 10, 9, 8, 00, 00),
+                LogPlace = new Place() { Latitude = 11.11, Longitude = 10.10, PlaceName = "Himalaya" },
+                Temperature = 24,
+                Humidity = 90,
+                AirPressure = 50
+            };
 
-        //[Theory]
-        //[InlineData()]
-        //public async Task PostWeatherLog_SeededLogs(WeatherLogDto weatherLog)
-        //{
+            var user = new UserDto()
+                { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
 
-        //}
+            //await _accountController.Register(user);
+
+            //Login
+            await _accountController.Login(user);
+
+            await _weatherController.PutWeatherLog(id, tempweatherlog);
+
+            var changedentity = await _weatherController.GetWeatherLog(id);
+
+            Assert.Equal(90, changedentity.Value.Humidity);
+        }
+
+        [Fact]
+        public async Task PostWeatherLog_SeededLogs()
+        {
+            WeatherLogDto tempweatherlog = new WeatherLogDto()
+            {
+                LogTime = new DateTime(2021, 10, 9, 8, 00, 00),
+                Temperature = 24,
+                Humidity = 90,
+                AirPressure = 85
+            };
+
+            //Login
+
+            var res = await _weatherController.PostWeatherLog(tempweatherlog);
+
+            var got = await _weatherController.GetWeatherLog(4);
+
+            Assert.Equal(85,got.Value.AirPressure);
+        }
 
         [Theory]
         [InlineData(3)]
