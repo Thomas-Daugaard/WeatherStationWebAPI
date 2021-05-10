@@ -23,9 +23,11 @@ namespace WeatherStationWebAPI.Test.XUnit
         protected ApplicationDbContext _context;
         protected WeatherLogsController _weatherController;
         protected AccountController _accountController;
+        protected WeatherLogControllerTestFixture _fixture;
 
         public WeatherLogControllerTest(WeatherLogControllerTestFixture ctrl) :base()
         {
+            _fixture = ctrl;
             this._weatherController = ctrl._weatherController;
             this._context = ctrl._context;
             this._accountController = ctrl._accountController;
@@ -95,7 +97,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             var user = new UserDto()
                 { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
 
-            await _accountController.Register(user);
+            //await _accountController.Register(user);
 
             //Login
             await _accountController.Login(user);
