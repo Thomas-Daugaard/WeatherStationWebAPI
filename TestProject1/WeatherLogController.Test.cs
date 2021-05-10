@@ -122,6 +122,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             WeatherLogDto tempweatherlog = new WeatherLogDto()
             {
                 LogTime = new DateTime(2021, 10, 9, 8, 00, 00),
+                LogPlaceId = 1,
                 Temperature = 24,
                 Humidity = 90,
                 AirPressure = 85
@@ -132,8 +133,8 @@ namespace WeatherStationWebAPI.Test.XUnit
             var res = await _weatherController.PostWeatherLog(tempweatherlog);
 
             var got = await _weatherController.GetWeatherLog(4);
-
-            Assert.Equal(85,got.Value.AirPressure);
+            
+            Assert.Equal(90,got.Value.Humidity);
         }
 
         [Fact, TestPriority(8)]
