@@ -12,7 +12,7 @@ using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.WebSocket;
 
-namespace WeatherStationWebAPI.Test.Unit
+namespace WeatherStationWebAPI.Test.Unit_NUnit
 {
     public class Tests
     {
