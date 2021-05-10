@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ using Microsoft.IdentityModel.Tokens;
 using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.WebSocket;
+using static BCrypt.Net.BCrypt;
 
 namespace WeatherStationWebAPI
 {
@@ -119,40 +121,45 @@ namespace WeatherStationWebAPI
             var exists = context.Users.SingleOrDefault(d=>d.UserId == 1);
             if (exists != null)
             {
-
             }
+
             else
             {
-                List<User> users = new List<User>()
+                List<UserDto> users = new List<UserDto>()
                 {
-                    new User()
+                    new ()
                     {
                         FirstName = "Hans",
                         LastName = "Hansen",
-                        Email = "test1@testesen.dk"
+                        Email = "test1@testesen.dk",
+                        Password = "Sommer25!"
                     },
-                    new User()
+                    new()
                     {
                         FirstName = "Peter",
                         LastName = "Petersen",
-                        Email = "test2@testesen.dk"
+                        Email = "test2@testesen.dk",
+                        Password = "Sommer25!"
                     },
-                    new User()
+                    new()
                     {
                         FirstName = "Kurt",
                         LastName = "Kurtesen",
-                        Email = "test3@testesen.dk"
+                        Email = "test3@testesen.dk",
+                        Password = "Sommer25!"
                     }
                 };
 
-                foreach (var item in users)
+                foreach (var user in users)
                 {
-                    context.Users.Add(item);
-                }
+                    var userToReg = new User()
+                        {Email = user.Email, FirstName = user.FirstName, LastName = user.LastName};
 
-                context.SaveChanges();
+                    userToReg.PwHash = HashPassword(user.Password, 10);
+                    context.Users.Add(userToReg);
+                    context.SaveChangesAsync();
+                }
             }
-           
         }
 
         public void SeedPlaces(ApplicationDbContext context)

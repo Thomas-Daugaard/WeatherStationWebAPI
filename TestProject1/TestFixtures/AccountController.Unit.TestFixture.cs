@@ -41,7 +41,7 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
         public void Dispose()
         {
             var user = new UserDto()
-                { Email = "ml@somemail.com", Password = "Password1234" };
+                { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
 
             // Act
             var userToDelete = Context.Users.SingleOrDefault(u => u.Email == user.Email);
