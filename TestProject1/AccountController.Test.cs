@@ -24,7 +24,7 @@ namespace WeatherStationWebAPI.Test.XUnit
         }
 
         [Fact]
-        public async Task AccountController_RegisterUser_ResponseCreated()
+        public async Task AccountController_RegisterUser_ReceivedResponseCreated()
         {
             // Arrange
             var user = new UserDto()
@@ -41,7 +41,7 @@ namespace WeatherStationWebAPI.Test.XUnit
         }
 
         [Fact]
-        public async Task AccountController_LoginUser_ResponseCreated()
+        public async Task AccountController_Login_UserLoggedInJWTTokenReceived()
         {
             // Arrange
             var user = new UserDto()
