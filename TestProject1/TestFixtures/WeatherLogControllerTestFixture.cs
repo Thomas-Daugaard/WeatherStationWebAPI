@@ -2,9 +2,9 @@ using System;
 
 namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 {
-    public class DatabaseTestFixture : IDisposable
+    public class WeatherLogControllerTestFixture : IDisposable
     {
-        public DatabaseTestFixture()
+        public WeatherLogControllerTestFixture()
         {
             
         }

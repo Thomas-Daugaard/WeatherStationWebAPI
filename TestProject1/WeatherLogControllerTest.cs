@@ -3,7 +3,7 @@ using Xunit;
 
 namespace WeatherStationWebAPI.Test.XUnit
 {
-    public class DatabaseTest : IClassFixture<DatabaseTestFixture>
+    public class WeatherLogControllerTest : IClassFixture<WeatherLogControllerTestFixture>
     {
         [Fact]
         public void Test1()
