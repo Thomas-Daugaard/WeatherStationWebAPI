@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using NSubstitute;
 using WeatherStationWebAPI.Controllers;
 using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.WebSocket;
@@ -10,10 +11,10 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 {
     public class AccountControllerTestFixture : IDisposable
     {
-        private ApplicationDbContext _context;
-        private IOptions<AppSettings> _appSettings;
-        private IHubContext<WeatherHub> _mockHub;
-        private AccountController _accountController;
+        protected ApplicationDbContext _context;
+        protected IOptions<AppSettings> _appSettings;
+        protected IHubContext<WeatherHub> _mockHub;
+        protected AccountController _accountController;
 
         public AccountControllerTestFixture()
         {
