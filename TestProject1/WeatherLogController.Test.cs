@@ -22,11 +22,21 @@ namespace WeatherStationWebAPI.Test.XUnit
     {
         protected ApplicationDbContext _context;
         protected WeatherLogsController _weatherController;
+        public WeatherLog tempweatherlog;
 
         public WeatherLogControllerTest(WeatherLogControllerTestFixture ctrl) :base()
         {
             this._weatherController = ctrl._weatherController;
             this._context = ctrl._context;
+
+            tempweatherlog = new WeatherLog()
+            {
+                LogTime = new DateTime(2021, 10, 8, 8, 00, 00),
+                LogPlace = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" },
+                Temperature = 24,
+                Humidity = 80,
+                AirPressure = 50
+            };
         }
 
         
@@ -73,7 +83,7 @@ namespace WeatherStationWebAPI.Test.XUnit
         }
 
         [Theory]
-        [InlineData(1,)]
+        [InlineData(1, tempweatherlog)]
         public async Task PutWeatherLog_SeededLogs(int id, WeatherLog log)
         {
 
