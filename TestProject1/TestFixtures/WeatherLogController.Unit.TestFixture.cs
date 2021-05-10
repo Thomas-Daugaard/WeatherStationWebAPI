@@ -90,6 +90,7 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 
         public void Dispose()
         {
+            _context.Database.EnsureDeleted();
             _context.Dispose();
         }
     }

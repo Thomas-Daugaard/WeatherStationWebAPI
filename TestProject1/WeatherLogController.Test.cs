@@ -49,9 +49,10 @@ namespace WeatherStationWebAPI.Test.XUnit
         {
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogs();
 
-            Assert.InRange(logs.Value.Count(),2,3);
+            Assert.InRange(logs.Value.Count(), 2, 3);
+
+            //Assert.Equal(3,logs.Value.Count());
             
-            //Assert.Equal(3,logs.Result.Value.Count());
 
         }
 
@@ -65,13 +66,15 @@ namespace WeatherStationWebAPI.Test.XUnit
         }
 
         [Fact, TestPriority(3)]
-        public async Task GetLastThreeWeatherLogs_SeededLogs()
+        public void GetLastThreeWeatherLogs_SeededLogs()
         {
-            ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetLastThreeWeatherLogs();
+            Task<ActionResult<IEnumerable<WeatherLog>>> logs = _weatherController.GetLastThreeWeatherLogs();
 
-            var temp = logs.Value.LongCount();
+            var temp = logs.Result.Value.LongCount();
 
             Assert.InRange(temp,2,3);
+
+            //Assert.Equal(3,temp);
             
         }
 
@@ -80,7 +83,7 @@ namespace WeatherStationWebAPI.Test.XUnit
         {
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetAllWeatherLogsForDate(Convert.ToDateTime("2021, 10, 9"));
 
-            Assert.Equal(1, logs.Value.Count());
+            Assert.Single(logs.Value);
         }
 
         [Fact, TestPriority(5)]
@@ -90,7 +93,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             DateTime to = Convert.ToDateTime("2021, 10, 10");
 
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogsForTimeframe(from,to);
-
+            
             Assert.InRange(logs.Value.Count(),1,2);
             
         }
