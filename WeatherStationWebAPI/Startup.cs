@@ -37,7 +37,7 @@ namespace WeatherStationWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ThomasConnectionString")));
+                    options.UseSqlServer(Configuration.GetConnectionString("CamillaConnectionString")));
 
             services.AddCors();
             services.AddControllers();
@@ -110,7 +110,7 @@ namespace WeatherStationWebAPI
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Account}/{action=Login}");
-                endpoints.MapHub<WeatherHub>("/weatherHub"); //For SignalR
+                endpoints.MapHub<WeatherHub>("/WeatherHub"); //For SignalR
             });
         }
 
