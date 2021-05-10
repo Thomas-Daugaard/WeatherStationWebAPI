@@ -20,6 +20,15 @@ namespace WeatherStationWebAPI.Test.XUnit
 {
     public class WeatherLogControllerTest : IClassFixture<WeatherLogControllerTestFixture>
     {
+        //Test prioritering
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+        public class TestPriorityAttribute : Attribute
+        {
+            public int Priority { get; private set; }
+
+            public TestPriorityAttribute(int priority) => Priority = priority;
+        }
+
         protected ApplicationDbContext _context;
         protected WeatherLogsController _weatherController;
         //protected AccountController _accountController;
@@ -35,7 +44,7 @@ namespace WeatherStationWebAPI.Test.XUnit
 
         
 
-        [Fact]
+        [Fact, TestPriority(3)]
         public async Task GetWeatherLogs_isEQToSeeded3()
         {
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogs();
@@ -44,17 +53,16 @@ namespace WeatherStationWebAPI.Test.XUnit
 
         }
 
-        [Theory]
+        [Theory, TestPriority(2)]
         [InlineData(1)]
-        public async Task GetWeatherLogById_SeededLogs(int id)
+        public async Task GetWeatherLogById_SeededLogs_TempEqualTo24(int id)
         {
             ActionResult<WeatherLog> log = await _weatherController.GetWeatherLog(id);
 
             Assert.Equal(24, log.Value.Temperature);
         }
 
-        [Theory]
-        [InlineData()]
+        [Fact, TestPriority(1)]
         public async Task GetLastThreeWeatherLogs_SeededLogs()
         {
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetLastThreeWeatherLogs();
@@ -62,7 +70,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(3, logs.Value.Count());
         }
 
-        [Theory]
+        [Theory, TestPriority(4)]
         [InlineData("2021, 10, 8")]
         public async Task GetAllWeatherLogsForDate_SeededLogs(DateTime date)
         {
@@ -71,7 +79,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(1, logs.Value.Count());
         }
 
-        [Theory]
+        [Theory, TestPriority(5)]
         [InlineData("2021, 10, 8", "2021, 10, 10")]
         public async Task GetWeatherLogsForTimeframe_SeededLogs(DateTime from, DateTime to)
         {
@@ -80,11 +88,10 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(2, logs.Value.Count());
         }
 
-        [Theory]
+        [Theory, TestPriority(6)]
         [InlineData(1)]
         public async Task PutWeatherLog_SeededLogs(int id)
         {
-
             WeatherLog tempweatherlog = new WeatherLog()
             {
                 LogTime = new DateTime(2021, 10, 9, 8, 00, 00),
@@ -109,7 +116,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(90, changedentity.Value.Humidity);
         }
 
-        [Fact]
+        [Fact, TestPriority(7)]
         public async Task PostWeatherLog_SeededLogs()
         {
             WeatherLogDto tempweatherlog = new WeatherLogDto()
@@ -129,11 +136,10 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(85,got.Value.AirPressure);
         }
 
-        [Theory]
-        [InlineData(3)]
-        public async Task DeleteWeatherLog_SeededLogs(int id)
+        [Fact, TestPriority(8)]
+        public async Task DeleteWeatherLog_SeededLogs()
         {
-            await _weatherController.DeleteWeatherLog(id);
+            await _weatherController.DeleteWeatherLog(1);
 
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogs();
 
