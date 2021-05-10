@@ -40,6 +40,7 @@ namespace WeatherStationWebAPI.Test.XUnit
 
         }
 
+        [Theory]
         [InlineData(1)]
         public async Task GetWeatherLogById_SeededLogs(int id)
         {
@@ -48,6 +49,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(24, log.Value.Temperature);
         }
 
+        [Theory]
         [InlineData()]
         public async Task GetLastThreeWeatherLogs_SeededLogs()
         {
@@ -56,37 +58,43 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(3, logs.Value.Count());
         }
 
-        [InlineData()]
+        [Theory]
+        [InlineData("2021, 10, 8")]
         public async Task GetAllWeatherLogsForDate_SeededLogs(DateTime date)
         {
 
         }
 
-        [InlineData()]
+        [Theory]
+        [InlineData("2021, 10, 8", "2021, 10, 9")]
         public async Task GetWeatherLogsForTimeframe_SeededLogs(DateTime from, DateTime to)
         {
 
         }
 
-        [InlineData()]
+        [Theory]
+        [InlineData(1,)]
         public async Task PutWeatherLog_SeededLogs(int id, WeatherLog log)
         {
 
         }
 
+        [Theory]
         [InlineData()]
         public async Task PostWeatherLog_SeededLogs(WeatherLogDto weatherLog)
         {
 
         }
-        
-        [InlineData(8)]
+
+        [Theory]
+        [InlineData(3)]
         public async Task DeleteWeatherLog_SeededLogs(int id)
         {
 
         }
-        
-        [InlineData(7)]
+
+        [Theory]
+        [InlineData(2)]
         public async Task WeatherLogExists_SeededLogs(int id)
         {
 
