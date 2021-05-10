@@ -20,6 +20,17 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
             _context = new ApplicationDbContext(
                 new DbContextOptionsBuilder<ApplicationDbContext>()
                     .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NGKWeatherAPI;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False").Options);
+            
+            var settings = new AppSettings()
+            {
+                SecretKey = "ncSK45=)7@#qwKDSopevvkj3274687236"
+            };
+
+            _appSettings = Options.Create(settings);
+
+            _mockHub = Substitute.For<IHubContext<WeatherHub>>();
+
+            _accountController = new AccountController(_context, _appSettings, _mockHub);
         }
 
         public void Dispose()
