@@ -20,14 +20,18 @@ namespace WeatherStationWebAPI.Test.XUnit
 {
     public class WeatherLogControllerTest : IClassFixture<WeatherLogControllerTestFixture>
     {
+        private WeatherLogsController _weatherLogsController;
+
         private ApplicationDbContext _context;
         private IOptions<AppSettings> _appSettings;
         private IHubContext<WeatherHub> _mockHub;
         private WeatherLogsController _weatherController;
         private Place _place;
 
-        public WeatherLogControllerTest()
+        public WeatherLogControllerTest(WeatherLogsController ctrl) :base()
         {
+            _weatherLogsController = ctrl;
+
             _context = new ApplicationDbContext(
                 new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(CreateInMemoryDatabase()).Options);
 
@@ -88,11 +92,11 @@ namespace WeatherStationWebAPI.Test.XUnit
         }
 
         [Fact]
-        public async Task GetWeatherLogs_isEQToSeeded9()
+        public async Task GetWeatherLogs_isEQToSeeded3()
         {
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogs();
 
-            Assert.Equal(2, logs.Value.Count());
+            Assert.Equal(3, logs.Value.Count());
 
         }
 
