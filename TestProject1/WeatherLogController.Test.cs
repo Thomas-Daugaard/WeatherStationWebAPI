@@ -22,7 +22,7 @@ namespace WeatherStationWebAPI.Test.XUnit
     {
         protected ApplicationDbContext _context;
         protected WeatherLogsController _weatherController;
-        protected AccountController _accountController;
+        //protected AccountController _accountController;
         protected WeatherLogControllerTestFixture _fixture;
 
         public WeatherLogControllerTest(WeatherLogControllerTestFixture ctrl) :base()
@@ -30,7 +30,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             _fixture = ctrl;
             this._weatherController = ctrl._weatherController;
             this._context = ctrl._context;
-            this._accountController = ctrl._accountController;
+            //this._accountController = ctrl._accountController;
         }
 
         
@@ -94,13 +94,13 @@ namespace WeatherStationWebAPI.Test.XUnit
                 AirPressure = 50
             };
 
-            var user = new UserDto()
-                { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
+            //var user = new UserDto()
+            //    { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
 
             //await _accountController.Register(user);
 
             //Login
-            await _accountController.Login(user);
+            //await _accountController.Login(user);
 
             await _weatherController.PutWeatherLog(id, tempweatherlog);
 
@@ -120,7 +120,7 @@ namespace WeatherStationWebAPI.Test.XUnit
                 AirPressure = 85
             };
 
-            //Login
+            //Evt. Login
 
             var res = await _weatherController.PostWeatherLog(tempweatherlog);
 
@@ -133,14 +133,11 @@ namespace WeatherStationWebAPI.Test.XUnit
         [InlineData(3)]
         public async Task DeleteWeatherLog_SeededLogs(int id)
         {
+            await _weatherController.DeleteWeatherLog(id);
 
-        }
+            ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogs();
 
-        [Theory]
-        [InlineData(2)]
-        public async Task WeatherLogExists_SeededLogs(int id)
-        {
-
+            Assert.Equal(2, logs.Value.Count());
         }
     }
 }
