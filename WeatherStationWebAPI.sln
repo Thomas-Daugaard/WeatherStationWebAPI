@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherStationWebAPI", "WeatherStationWebAPI\WeatherStationWebAPI.csproj", "{81ED299C-7599-4D44-B729-A3B799170C11}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherStationWebAPI.Test.Unit_NUnit", "WeatherStationWebAPI.Test.Unit\WeatherStationWebAPI.Test.Unit_NUnit.csproj", "{0025FACC-F519-454F-8A72-2F19915AF648}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherStationWebAPI.Test.NUnit", "WeatherStationWebAPI.Test.Unit\WeatherStationWebAPI.Test.NUnit.csproj", "{0025FACC-F519-454F-8A72-2F19915AF648}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignedUpClient", "SignedUpClient\SignedUpClient.csproj", "{495B6858-E750-452C-905B-E0B4C3A0964E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherStationWebAPI.Test.Unit_XUnit", "TestProject1\WeatherStationWebAPI.Test.Unit_XUnit.csproj", "{448B2E20-2427-411E-B8C3-4A33622B70F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherStationWebAPI.Test.XUnit", "TestProject1\WeatherStationWebAPI.Test.XUnit.csproj", "{448B2E20-2427-411E-B8C3-4A33622B70F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

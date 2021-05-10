@@ -1,14 +1,12 @@
 using System;
-using Xunit;
 
-namespace WeatherStationWebAPI.Test.Unit_XUnit
+namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 {
     public class DatabaseTestFixture : IDisposable
     {
-
-        public void Setup()
+        public DatabaseTestFixture()
         {
-
+            
         }
 
         public void Dispose()
