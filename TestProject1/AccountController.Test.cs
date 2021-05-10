@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using WeatherStationWebAPI.Controllers;
 using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.Models;
@@ -11,11 +12,13 @@ namespace WeatherStationWebAPI.Test.XUnit
 {
     public class AccountControllerTest : IClassFixture<AccountControllerTestFixture>
     {
-        protected ApplicationDbContext _context;
-        protected AccountController _accountController;
+        private ApplicationDbContext _context;
+        private AccountController _accountController;
+        private AccountControllerTestFixture _fixture;
 
         public AccountControllerTest(AccountControllerTestFixture fixture) : base()
         {
+            _fixture = fixture;
             this._context = fixture.Context;
             this._accountController = fixture.AccountController;
         }
@@ -37,20 +40,17 @@ namespace WeatherStationWebAPI.Test.XUnit
         public async Task AccountController_LoginUser_ResponseCreated()
         {
             var user = new UserDto()
-                { Email = "ml@somemail.com", Password = "Password1234" };
+                { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
+
+            await _accountController.Register(user);
 
             var response = await _accountController.Login(user);
 
             var token = response.Value.JWT;
 
-            Assert.Equal(token, response.Value.JWT);
+            Assert.Equal(typeof(TokenDto).FullName, response.Value.GetType().FullName);
 
-            // cleanup
-
-            var userToDelete = _context.Users.SingleOrDefault(u => u.Email == user.Email);
-            if (userToDelete != null)
-                _context.Users.Remove(userToDelete);
-            _context.SaveChanges();
+            _fixture.Dispose();
         }
     }
 }

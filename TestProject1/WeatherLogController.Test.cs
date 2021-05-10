@@ -20,11 +20,23 @@ namespace WeatherStationWebAPI.Test.XUnit
 {
     public class WeatherLogControllerTest : IClassFixture<WeatherLogControllerTestFixture>
     {
-        private WeatherLogsController _weatherController;
+        protected ApplicationDbContext _context;
+        protected WeatherLogsController _weatherController;
+        public WeatherLog tempweatherlog;
 
-        public WeatherLogControllerTest(WeatherLogsController ctrl) :base()
+        public WeatherLogControllerTest(WeatherLogControllerTestFixture ctrl) :base()
         {
-            _weatherController = ctrl;
+            this._weatherController = ctrl._weatherController;
+            this._context = ctrl._context;
+
+            tempweatherlog = new WeatherLog()
+            {
+                LogTime = new DateTime(2021, 10, 8, 8, 00, 00),
+                LogPlace = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" },
+                Temperature = 24,
+                Humidity = 80,
+                AirPressure = 50
+            };
         }
 
         
@@ -38,6 +50,7 @@ namespace WeatherStationWebAPI.Test.XUnit
 
         }
 
+        [Theory]
         [InlineData(1)]
         public async Task GetWeatherLogById_SeededLogs(int id)
         {
@@ -46,6 +59,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(24, log.Value.Temperature);
         }
 
+        [Theory]
         [InlineData()]
         public async Task GetLastThreeWeatherLogs_SeededLogs()
         {
@@ -54,37 +68,43 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(3, logs.Value.Count());
         }
 
-        [InlineData()]
+        [Theory]
+        [InlineData("2021, 10, 8")]
         public async Task GetAllWeatherLogsForDate_SeededLogs(DateTime date)
         {
 
         }
 
-        [InlineData()]
+        [Theory]
+        [InlineData("2021, 10, 8", "2021, 10, 9")]
         public async Task GetWeatherLogsForTimeframe_SeededLogs(DateTime from, DateTime to)
         {
 
         }
 
-        [InlineData()]
+        [Theory]
+        [InlineData(1, tempweatherlog)]
         public async Task PutWeatherLog_SeededLogs(int id, WeatherLog log)
         {
 
         }
 
+        [Theory]
         [InlineData()]
         public async Task PostWeatherLog_SeededLogs(WeatherLogDto weatherLog)
         {
 
         }
-        
-        [InlineData(8)]
+
+        [Theory]
+        [InlineData(3)]
         public async Task DeleteWeatherLog_SeededLogs(int id)
         {
 
         }
-        
-        [InlineData(7)]
+
+        [Theory]
+        [InlineData(2)]
         public async Task WeatherLogExists_SeededLogs(int id)
         {
 

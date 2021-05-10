@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using WeatherStationWebAPI.Controllers;
 using WeatherStationWebAPI.Data;
+using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.WebSocket;
 
 namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
@@ -38,9 +40,15 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 
         public void Dispose()
         {
-            
+            var user = new UserDto()
+                { Email = "ml@somemail.com", Password = "Password1234" };
+
+            // Act
+            var userToDelete = Context.Users.SingleOrDefault(u => u.Email == user.Email);
+
+            if (userToDelete != null)
+                Context.Users.Remove(userToDelete);
+            Context.SaveChanges();
         }
     }
-
-
 }

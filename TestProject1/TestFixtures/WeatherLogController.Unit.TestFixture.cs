@@ -14,10 +14,10 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 {
     public class WeatherLogControllerTestFixture : IDisposable
     {
-        private ApplicationDbContext _context;
+        public ApplicationDbContext _context { get; set; }
         private IOptions<AppSettings> _appSettings;
         private IHubContext<WeatherHub> _mockHub;
-        private WeatherLogsController _weatherController;
+        public WeatherLogsController _weatherController { get; set; }
         private Place _place;
 
         public WeatherLogControllerTestFixture()
