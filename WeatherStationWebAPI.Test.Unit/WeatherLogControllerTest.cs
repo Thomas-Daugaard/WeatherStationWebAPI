@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -30,13 +31,17 @@ namespace WeatherStationWebAPI.Test.Unit
         public void Setup()
         {
             _context = new ApplicationDbContext(
-                new DbContextOptionsBuilder<ApplicationDbContext>()
-                    .UseSqlServer(CreateInMemoryDatabase()).Options); 
+                new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlite(CreateInMemoryDatabase()).Options);
+            //.UseSqlServer(CreateInMemoryDatabase()).Options); //Real DB 
+            //Fake db: UseSqlite(CreateInMemoryDatabase()).Options);
 
             //In memory DB for testing purpose
-                    static DbConnection CreateInMemoryDatabase()
+            static DbConnection CreateInMemoryDatabase()
                     {
-                        var connection = new SqlConnection("Data Source=localhost;Initial Catalog=NGKWebApiWeatherLog;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                        var connection = new SqliteConnection("Filename=:memory:");//Fake db
+
+                //Real DB:
+                        //var connection = new SqlConnection("Data Source=localhost;Initial Catalog=NGKWebApiWeatherLog;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
                         connection.Open();
                         return connection;
                     }
@@ -45,6 +50,35 @@ namespace WeatherStationWebAPI.Test.Unit
             {
                 SecretKey = "ncSK45=)7@#qwKDSopevvkj3274687236"
             };
+
+
+            _context.Database.EnsureCreated();
+            _context.WeatherLogs.AddRange(
+                 new WeatherLog()
+                {
+                    LogTime = new DateTime(2021, 10, 8, 8, 00, 00),
+                    LogPlace = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" },
+                    Temperature = 24,
+                    Humidity = 80,
+                    AirPressure = 50
+                },
+                 new WeatherLog()
+                 {
+                     LogTime = new DateTime(2021, 10, 9, 9, 00, 00),
+                     LogPlace = new Place() { Latitude = 12.12, Longitude = 12.12, PlaceName = "K2" },
+                     Temperature = 1,
+                     Humidity = 50,
+                     AirPressure = 90
+                 },
+                 new WeatherLog()
+                 {
+                     LogTime = new DateTime(2021, 11, 9, 9, 00, 00),
+                     LogPlace = new Place() { Latitude = 14.14, Longitude = 14.14, PlaceName = "K10" },
+                     Temperature = 5,
+                     Humidity = 55,
+                     AirPressure = 97
+                 });
+            _context.SaveChanges();
 
             _place = Substitute.For<Place>();
 
@@ -60,7 +94,7 @@ namespace WeatherStationWebAPI.Test.Unit
         {
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogs();
 
-            Assert.AreEqual(9, logs.Value.Count());
+            Assert.AreEqual(2, logs.Value.Count());
 
         }
 
