@@ -8,11 +8,11 @@ var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:4
 
 connection.on("WeatherUpdate",
     function (message) {
-        console.log(JSON.stringify(message));
+        //console.log(JSON.stringify(message));
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = msg;
+        //var encodedMsg = msg;
         var li = document.createElement("li");
-        li.textContent = encodedMsg;
+        li.textContent = msg;
         document.getElementById("WeatherLog").appendChild(li);
     });
 
