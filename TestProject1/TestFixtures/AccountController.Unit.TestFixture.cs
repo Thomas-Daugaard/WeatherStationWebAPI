@@ -11,14 +11,16 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 {
     public class AccountControllerTestFixture : IDisposable
     {
-        protected ApplicationDbContext _context;
-        protected IOptions<AppSettings> _appSettings;
-        protected IHubContext<WeatherHub> _mockHub;
-        protected AccountController _accountController;
+        public ApplicationDbContext Context { get; private set; }
+        public AccountController AccountController { get; private set; }
+
+        private IOptions<AppSettings> _appSettings;
+        private IHubContext<WeatherHub> _mockHub;
+        
 
         public AccountControllerTestFixture()
         {
-            _context = new ApplicationDbContext(
+            Context = new ApplicationDbContext(
                 new DbContextOptionsBuilder<ApplicationDbContext>()
                     .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NGKWeatherAPI;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False").Options);
             
@@ -31,7 +33,7 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 
             _mockHub = Substitute.For<IHubContext<WeatherHub>>();
 
-            _accountController = new AccountController(_context, _appSettings, _mockHub);
+            AccountController = new AccountController(Context, _appSettings, _mockHub);
         }
 
         public void Dispose()

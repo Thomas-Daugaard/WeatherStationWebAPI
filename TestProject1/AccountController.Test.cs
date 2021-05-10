@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WeatherStationWebAPI.Controllers;
+using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.Test.XUnit.TestFixtures;
 using Xunit;
@@ -9,11 +11,13 @@ namespace WeatherStationWebAPI.Test.XUnit
 {
     public class AccountControllerTest : IClassFixture<AccountControllerTestFixture>
     {
-        private AccountController _accountController;
+        protected ApplicationDbContext _context;
+        protected AccountController _accountController;
 
-        public AccountControllerTest(AccountController accountController) : base()
+        public AccountControllerTest(AccountControllerTestFixture fixture) : base()
         {
-            _accountController = accountController;
+            this._context = fixture.Context;
+            this._accountController = fixture.AccountController;
         }
 
         [Fact]
