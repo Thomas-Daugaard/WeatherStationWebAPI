@@ -6,10 +6,17 @@
 "use strict";
 var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44301/").build();
 
-connection.on("UpdateMessage", function (user, message) {
-    var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = user + " says " + msg;
-    var li = document.createElement("li");
-    li.textContent = encodedMsg;
-    document.getElementById("WeatherLog").appendChild(li);
-})
+connection.on("WeatherUpdate",
+    function(user, message) {
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = user + " says " + msg;
+        var li = document.createElement("li");
+        li.textContent = encodedMsg;
+        document.getElementById("WeatherLog").appendChild(li);
+    });
+
+connection.start().then(function() {
+    console.log("Connection started")
+}).catch(function(err) {
+    return console.error(err.toString());
+});
