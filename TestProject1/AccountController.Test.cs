@@ -24,32 +24,39 @@ namespace WeatherStationWebAPI.Test.XUnit
         }
 
         [Fact]
-        public async Task AccountController_RegisterUser_ResponseCreated()
+        public async Task AccountController_RegisterUser_ReceivedResponseCreated()
         {
+            // Arrange
             var user = new UserDto()
                 { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
 
+            // Act - post to /api/account/register
             var response = await _accountController.Register(user);
 
-            var result = response.Result as CreatedAtActionResult;
+            // Assert - user registered / created
+            Assert.NotNull(response.Result as CreatedAtActionResult);
 
-            Assert.NotNull(result);
+            // Cleanup
+            _fixture.Dispose();
         }
 
         [Fact]
-        public async Task AccountController_LoginUser_ResponseCreated()
+        public async Task AccountController_Login_UserLoggedInJWTTokenReceived()
         {
+            // Arrange
             var user = new UserDto()
                 { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
 
+            // Act - post to /api/account/register
             await _accountController.Register(user);
-
+            
+            // Act - post to /api/account/login
             var response = await _accountController.Login(user);
 
-            var token = response.Value.JWT;
-
+            // Assert - JWT token received
             Assert.Equal(typeof(TokenDto).FullName, response.Value.GetType().FullName);
 
+            // Cleanup
             _fixture.Dispose();
         }
     }
