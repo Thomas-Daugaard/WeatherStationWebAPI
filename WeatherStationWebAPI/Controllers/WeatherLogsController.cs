@@ -157,11 +157,9 @@ namespace WeatherStationWebAPI.Controllers
 
             //==================  SignalR ===================
             var placeid = weatherLog.LogPlace.PlaceId;
-            //var users = _context.Users.SelectMany(d => d.SignedUpPlaces).Where(l => l.PlaceId == placeid).ToList();
-            
             var jsonmsg = JsonConvert.SerializeObject(weatherLog);
             await _weatherHub.Clients.All.SendAsync("WeatherUpdate", jsonmsg);
-            //await _weatherHub.Clients.Group(placeid.ToString()).SendAsync("WeatherUpdate:", jsonmsg); //Send SignalR Message to all signed up users//Eventuelt uden groups da den sender til alle clients tilsluttet hub'en. Evt en hub for hver vejrstation?
+            
             return CreatedAtAction("GetWeatherLog", new { id = weatherLog.LogId }, weatherLog);
 
         }
