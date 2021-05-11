@@ -21,7 +21,6 @@ namespace WeatherStationWebAPI.Test.XUnit
 {
     public class WeatherLogControllerUnitTest
     {
-
         protected ApplicationDbContext _context { get; set; }
         private IOptions<AppSettings> _appSettings;
         private IHubContext<WeatherHub> _mockHub;
