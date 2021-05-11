@@ -31,7 +31,6 @@ namespace WeatherStationWebAPI.Test.XUnit
 
         protected ApplicationDbContext _context;
         protected WeatherLogsController _weatherController;
-        //protected AccountController _accountController;
         protected WeatherLogControllerTestFixture _fixture;
 
         public WeatherLogControllerTest(WeatherLogControllerTestFixture ctrl) :base()
@@ -39,10 +38,8 @@ namespace WeatherStationWebAPI.Test.XUnit
             _fixture = ctrl;
             this._weatherController = ctrl._weatherController;
             this._context = ctrl._context;
-            //this._accountController = ctrl._accountController;
         }
 
-        
 
         [Fact, TestPriority(1)]
         public async Task GetWeatherLogs_isEQToSeeded3()
@@ -52,7 +49,6 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.InRange(logs.Value.Count(), 2, 3);
 
             //Assert.Equal(3,logs.Value.Count());
-            
 
         }
 
@@ -62,7 +58,6 @@ namespace WeatherStationWebAPI.Test.XUnit
             ActionResult<WeatherLog> log = await _weatherController.GetWeatherLog(1);
 
             Assert.Equal(24, log.Value.Temperature);
-            
         }
 
         [Fact, TestPriority(3)]
@@ -97,35 +92,6 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.InRange(logs.Value.Count(),1,2);
             
         }
-
-        //[Theory, TestPriority(6)]
-        //[InlineData(1)]
-        //public async Task PutWeatherLog_SeededLogs(int id)
-        //{
-        //    WeatherLog tempweatherlog = new WeatherLog()
-        //    {
-        //        //LogId = id,
-        //        LogTime = new DateTime(2021, 10, 9, 8, 00, 00),
-        //        LogPlace = new Place() { Latitude = 11.11, Longitude = 10.10, PlaceName = "Himalaya" },
-        //        Temperature = 24,
-        //        Humidity = 90,
-        //        AirPressure = 50
-        //    };
-
-        //    //var user = new UserDto()
-        //    //    { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
-
-        //    //await _accountController.Register(user);
-
-        //    //Login
-        //    //await _accountController.Login(user);
-
-        //    await _weatherController.PutWeatherLog(id, tempweatherlog);
-
-        //    var changedentity = await _weatherController.GetWeatherLog(id);
-
-        //    Assert.Equal(90, changedentity.Value.Humidity);
-        //}
 
         [Fact, TestPriority(6)]
         public async Task PostWeatherLog_SeededLogs()
