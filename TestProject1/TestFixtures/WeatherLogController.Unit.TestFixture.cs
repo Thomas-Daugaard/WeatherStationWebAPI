@@ -87,7 +87,6 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
     }
 
