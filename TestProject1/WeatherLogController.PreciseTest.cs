@@ -25,7 +25,6 @@ namespace WeatherStationWebAPI.Test.XUnit
         private IOptions<AppSettings> _appSettings;
         private IHubContext<WeatherHub> _mockHub;
         protected WeatherLogsController _weatherController { get; set; }
-        protected Place _place { get; set; }
 
 
         public WeatherLogControllerUnitTest() 
@@ -35,8 +34,6 @@ namespace WeatherStationWebAPI.Test.XUnit
             {
                 SecretKey = "ncSK45=)7@#qwKDSopevvkj3274687236"
             };
-
-            _place = Substitute.For<Place>();
 
             _appSettings = Options.Create(settings);
 
@@ -72,8 +69,10 @@ namespace WeatherStationWebAPI.Test.XUnit
             _weatherController = new WeatherLogsController(_context, _mockHub);
             Seed();
 
+            //Act
             ActionResult<WeatherLog> log = await _weatherController.GetWeatherLog(1);
 
+            //Assert
             Assert.Equal(24, log.Value.Temperature);
 
             Dispose();
@@ -89,10 +88,12 @@ namespace WeatherStationWebAPI.Test.XUnit
             _weatherController = new WeatherLogsController(_context, _mockHub);
             Seed();
 
+            //Act
             Task<ActionResult<IEnumerable<WeatherLog>>> logs = _weatherController.GetLastThreeWeatherLogs();
 
             var temp = logs.Result.Value.LongCount();
 
+            //Assert
             Assert.Equal(3,temp);
 
             Dispose();
@@ -109,8 +110,10 @@ namespace WeatherStationWebAPI.Test.XUnit
             _weatherController = new WeatherLogsController(_context, _mockHub);
             Seed();
 
+            //Act
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetAllWeatherLogsForDate(Convert.ToDateTime("2021, 10, 9"));
 
+            //Assert
             Assert.Single(logs.Value);
 
             Dispose();
@@ -129,8 +132,10 @@ namespace WeatherStationWebAPI.Test.XUnit
             DateTime from = Convert.ToDateTime("2021, 10, 8");
             DateTime to = Convert.ToDateTime("2021, 10, 10");
 
+            //Act
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogsForTimeframe(from, to);
 
+            //Assert
             Assert.Equal(2,logs.Value.Count());
 
             Dispose();
@@ -156,10 +161,12 @@ namespace WeatherStationWebAPI.Test.XUnit
                 AirPressure = 85
             };
 
+            //Act
             var res = await _weatherController.PostWeatherLog(tempweatherlog);
 
             var got = await _weatherController.GetWeatherLog(4);
 
+            //Assert
             Assert.Equal(90, got.Value.Humidity);
 
             Dispose();
@@ -176,10 +183,12 @@ namespace WeatherStationWebAPI.Test.XUnit
             _weatherController = new WeatherLogsController(_context, _mockHub);
             Seed();
 
+            //Act
             await _weatherController.DeleteWeatherLog(1);
 
             ActionResult<IEnumerable<WeatherLog>> logs = await _weatherController.GetWeatherLogs();
 
+            //Assert
             Assert.Equal(2, logs.Value.Count());
 
             Dispose();
