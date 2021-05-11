@@ -86,6 +86,4 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
         {
         }
     }
-
-
 }

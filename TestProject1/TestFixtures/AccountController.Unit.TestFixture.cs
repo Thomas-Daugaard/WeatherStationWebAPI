@@ -40,6 +40,10 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 
         public void Dispose()
         {
+        }
+
+        public void CleanupDatabase()
+        {
             var user = new UserDto()
                 { Email = "ml@somemail.com", FirstName = "Morten", LastName = "Larsen", Password = "Password1234" };
 

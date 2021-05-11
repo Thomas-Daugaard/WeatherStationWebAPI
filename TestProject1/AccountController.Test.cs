@@ -37,7 +37,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.NotNull(response.Result as CreatedAtActionResult);
 
             // Cleanup
-            _fixture.Dispose();
+            _fixture.CleanupDatabase();
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.Equal(typeof(TokenDto).FullName, response.Value.GetType().FullName);
 
             // Cleanup
-            _fixture.Dispose();
+            _fixture.CleanupDatabase();
         }
     }
 }
