@@ -41,8 +41,6 @@ namespace WeatherStationWebAPI.Test.XUnit
 
             Assert.InRange(logs.Value.Count(), 2, 3);
 
-            //Assert.Equal(3,logs.Value.Count());
-
         }
 
         [Fact, TestPriority(2)]
@@ -61,8 +59,6 @@ namespace WeatherStationWebAPI.Test.XUnit
             var temp = logs.Result.Value.LongCount();
 
             Assert.InRange(temp,2,3);
-
-            //Assert.Equal(3,temp);
             
         }
 
