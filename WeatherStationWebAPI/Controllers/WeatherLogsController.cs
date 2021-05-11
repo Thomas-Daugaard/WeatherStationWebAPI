@@ -96,38 +96,40 @@ namespace WeatherStationWebAPI.Controllers
             return AllMeasurementsForTimeframe;
         }
 
+        //NOT USED
         // PUT: api/WeatherLogs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> PutWeatherLog(int id, WeatherLog weatherLog)
-        {
-            if (id != weatherLog.LogId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //[Authorize]
+        //public async Task<IActionResult> PutWeatherLog(int id, WeatherLog weatherLog)
+        //{
+        //    if (id != weatherLog.LogId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(weatherLog).State = EntityState.Modified;
+        //    _context.Entry(weatherLog).State = EntityState.Modified;
 
+        //    _context.WeatherLogs.Update(weatherLog);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WeatherLogExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!WeatherLogExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/WeatherLogs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
