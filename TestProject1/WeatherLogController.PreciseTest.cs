@@ -80,7 +80,7 @@ namespace WeatherStationWebAPI.Test.XUnit
         }
 
         [Fact]
-        public void GetLastThreeWeatherLogs_SeededLogs()
+        public void GetLastThreeWeatherLogs_SeededLogs3pcs()
         {
             //Arrange
             _context = new ApplicationDbContext(
