@@ -37,8 +37,6 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 
             _mockHub = Substitute.For<IHubContext<WeatherHub>>();
 
-            //_accountController = Substitute.For<AccountController>();
-
             _weatherController = new WeatherLogsController(_context, _mockHub);
 
             Seed();
@@ -89,6 +87,4 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
         {
         }
     }
-
-
 }

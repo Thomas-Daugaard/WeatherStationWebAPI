@@ -68,6 +68,7 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.InRange(temp,2,3);
 
             //Assert.Equal(3,temp);
+            
         }
 
         [Fact, TestPriority(4)]
