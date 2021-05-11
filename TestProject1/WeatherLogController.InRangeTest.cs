@@ -1,19 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using NSubstitute;
 using WeatherStationWebAPI.Controllers;
 using WeatherStationWebAPI.Data;
 using WeatherStationWebAPI.Models;
 using WeatherStationWebAPI.Test.XUnit.TestFixtures;
-using WeatherStationWebAPI.WebSocket;
 using Xunit;
 
 namespace WeatherStationWebAPI.Test.XUnit
@@ -70,7 +63,6 @@ namespace WeatherStationWebAPI.Test.XUnit
             Assert.InRange(temp,2,3);
 
             //Assert.Equal(3,temp);
-            
         }
 
         [Fact, TestPriority(4)]

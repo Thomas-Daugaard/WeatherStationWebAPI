@@ -47,7 +47,6 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
             _context.WeatherLogs.AddRange(
                 new WeatherLog()
                 {
-                    LogId = 1,
                     LogTime = new DateTime(2021, 10, 8, 8, 00, 00),
                     LogPlace = new Place() { Latitude = 10.10, Longitude = 10.10, PlaceName = "Himalaya" },
                     Temperature = 24,
@@ -56,7 +55,6 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
                 },
                 new WeatherLog()
                 {
-                    LogId = 2,
                     LogTime = new DateTime(2021, 10, 9, 9, 00, 00),
                     LogPlace = new Place() { Latitude = 12.12, Longitude = 12.12, PlaceName = "K2" },
                     Temperature = 1,
@@ -65,7 +63,6 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
                 },
                 new WeatherLog()
                 {
-                    LogId = 3,
                     LogTime = new DateTime(2021, 11, 9, 9, 00, 00),
                     LogPlace = new Place() { Latitude = 14.14, Longitude = 14.14, PlaceName = "K10" },
                     Temperature = 5,
@@ -87,8 +84,6 @@ namespace WeatherStationWebAPI.Test.XUnit.TestFixtures
 
         public void Dispose()
         {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
         }
     }
 
